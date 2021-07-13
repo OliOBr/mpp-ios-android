@@ -1,11 +1,22 @@
 package com.jetbrains.handson.mpp.mobile
 
 import io.ktor.client.*
+import io.ktor.client.features.json.JsonFeature
+import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
 
 
 expect fun platformName(): String
+
+
+val client = HttpClient(){
+    install(JsonFeature) {
+        serializer = KotlinxSerializer()
+    }
+}
 
 fun createApplicationScreenMessage(): String {
     return "Kotlin Rocks on ${platformName()}"
@@ -30,3 +41,13 @@ fun stationStringToCRS(station: String): String {
         else -> station
     }
 }
+
+suspend fun makeGetRequestForData(url: String):HttpResponse {
+    val response: HttpResponse = client.get(url)
+    println(response)
+    return response
+}
+
+
+
+
