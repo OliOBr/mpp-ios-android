@@ -5,14 +5,26 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import io.ktor.client.*
+import io.ktor.client.request.*
+import io.ktor.client.statement.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 
 class MainActivity : AppCompatActivity(), ApplicationContract.View {
+
     lateinit var departureStationDropdown: Spinner
     lateinit var arrivalStationDropdown: Spinner
+
+    val client = HttpClient()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,18 +47,27 @@ class MainActivity : AppCompatActivity(), ApplicationContract.View {
             departureStationDropdown.adapter = adapter
             arrivalStationDropdown.adapter = adapter
         }
+
+        val button: Button = findViewById(R.id.button)
+        button.setOnClickListener{getData()}
     }
 
     override fun setLabel(text: String) {
         findViewById<TextView>(R.id.main_text).text = text
     }
 
-    fun openURL(view: View) {
+    fun getData() = runBlocking { // this: CoroutineScope
+        launch { // launch a new coroutine and continue
+            makeGetRequestForData()
+        }
+    }
+
+    suspend fun makeGetRequestForData() {
         val departureStation=departureStationDropdown.selectedItem.toString()
         val arrivalStation = arrivalStationDropdown.selectedItem.toString()
         val url = getAPIURLWithSelectedStations(arrivalStation,departureStation)
-        val i = Intent(Intent.ACTION_VIEW)
-        i.data = Uri.parse(url)
-        startActivity(i)
+        val response: HttpResponse = client.get(url)
+        println(response);
     }
+
 }
