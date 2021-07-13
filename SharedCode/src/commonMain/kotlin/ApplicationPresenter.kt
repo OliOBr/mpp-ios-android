@@ -20,6 +20,10 @@ class ApplicationPresenter: ApplicationContract.Presenter() {
         view.setLabel(createApplicationScreenMessage())
     }
 
+    override fun getAPIURLWithSelectedStationsPresenter(arrivalStation: String, departureStation: String): String{
+        return getAPIURLWithSelectedStations(arrivalStation, departureStation)
+    }
+
     override fun getData(url: String):Unit {
         scope.launch { // launch a new coroutine and continue
             makeGetRequestForData(url)

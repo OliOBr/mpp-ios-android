@@ -17,6 +17,7 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     @IBOutlet private var label: UILabel!
     @IBOutlet private var arrivalStationPicker: UIPickerView!
     @IBOutlet private var departureStationPicker: UIPickerView!
+    @IBOutlet private var button: UIButton!
     var pickerData: [String] = [String]()
 
     private let presenter: ApplicationContractPresenter = ApplicationPresenter()
@@ -30,8 +31,15 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         departureStationPicker.dataSource = self
         pickerData = ["Newton Abbot","Waterloo","Durham","Cambridge", "Paddington"]
     }
-
     
+    @IBAction func onClickButton() {
+        let arrivalStation = pickerData[arrivalStationPicker.selectedRow(inComponent: 0)]
+        let departureStation = pickerData[departureStationPicker.selectedRow(inComponent: 0)]
+        if let url = URL(string: presenter.getAPIURLWithSelectedStationsPresenter(arrivalStation: arrivalStation,departureStation: departureStation)) {
+            UIApplication.shared.open(url)
+        }
+    }
+
 }
 
 extension ViewController: ApplicationContractView {

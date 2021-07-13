@@ -9,6 +9,9 @@ import android.widget.Button
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import java.util.*
 
 
 
@@ -44,6 +47,12 @@ class MainActivity : AppCompatActivity(), ApplicationContract.View {
         val button: Button = findViewById(R.id.button)
 
         button.setOnClickListener{getData()}
+        val rvTrains: RecyclerView = findViewById(R.id.rvTrains)
+        val trains = listOf(Train("Newton Abbot","Paddington", Date(2021,7,13,12,43),Date(2021,7,13,15,43)))
+        val trainAdapter = TrainAdapter(trains)
+        rvTrains.adapter = trainAdapter
+        rvTrains.layoutManager = LinearLayoutManager(this)
+
     }
 
     override fun setLabel(text: String) {
