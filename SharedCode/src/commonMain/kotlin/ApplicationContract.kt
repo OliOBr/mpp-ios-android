@@ -9,5 +9,6 @@ interface ApplicationContract {
 
     abstract class Presenter: CoroutineScope {
         abstract fun onViewTaken(view: View)
+        abstract fun getAPIURLWithSelectedStationsPresenter(arrivalStation: String, departureStation: String): String
     }
 }

@@ -17,7 +17,7 @@ class ApplicationPresenter: ApplicationContract.Presenter() {
         view.setLabel(createApplicationScreenMessage())
     }
 
-    fun getAPIURLWithSelectedStationsPresenter(arrivalStation: String, departureStation: String): String{
+    override fun getAPIURLWithSelectedStationsPresenter(arrivalStation: String, departureStation: String): String{
         return getAPIURLWithSelectedStations(arrivalStation, departureStation)
     }
 }

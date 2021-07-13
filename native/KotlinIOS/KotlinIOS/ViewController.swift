@@ -33,10 +33,9 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     }
     
     @IBAction func onClickButton() {
-        var arrivalStation = pickerData[arrivalStationPicker.selectedRow(inComponent: 0)]
-        var departureStation = pickerData[departureStationPicker.selectedRow(inComponent: 0)]
-        presenter.
-        if let url = URL(string: presenter.getAPIURLWithSelectedStationsPresenter(arrivalStation,departureStation)) {
+        let arrivalStation = pickerData[arrivalStationPicker.selectedRow(inComponent: 0)]
+        let departureStation = pickerData[departureStationPicker.selectedRow(inComponent: 0)]
+        if let url = URL(string: presenter.getAPIURLWithSelectedStationsPresenter(arrivalStation: arrivalStation,departureStation: departureStation)) {
             UIApplication.shared.open(url)
         }
     }
