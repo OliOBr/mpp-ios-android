@@ -8,6 +8,9 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import java.util.*
 
 
 class MainActivity : AppCompatActivity(), ApplicationContract.View {
@@ -35,6 +38,12 @@ class MainActivity : AppCompatActivity(), ApplicationContract.View {
             departureStationDropdown.adapter = adapter
             arrivalStationDropdown.adapter = adapter
         }
+        val rvTrains: RecyclerView = findViewById(R.id.rvTrains)
+        val trains = listOf(Train("Newton Abbot","Paddington", Date(2021,7,13,12,43),Date(2021,7,13,15,43)))
+        val trainAdapter = TrainAdapter(trains)
+        rvTrains.adapter = trainAdapter
+        rvTrains.layoutManager = LinearLayoutManager(this)
+
     }
 
     override fun setLabel(text: String) {
