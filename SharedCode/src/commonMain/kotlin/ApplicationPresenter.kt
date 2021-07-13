@@ -16,4 +16,8 @@ class ApplicationPresenter: ApplicationContract.Presenter() {
         this.view = view
         view.setLabel(createApplicationScreenMessage())
     }
+
+    fun getAPIURLWithSelectedStationsPresenter(arrivalStation: String, departureStation: String): String{
+        return getAPIURLWithSelectedStations(arrivalStation, departureStation)
+    }
 }
