@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 
 
 class MainActivity : AppCompatActivity(), ApplicationContract.View {
+    lateinit var departureStationDropdown: Spinner
+    lateinit var arrivalStationDropdown: Spinner
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,8 +21,8 @@ class MainActivity : AppCompatActivity(), ApplicationContract.View {
         val presenter = ApplicationPresenter()
         presenter.onViewTaken(this)
 
-        val departureStationDropdown: Spinner = findViewById(R.id.spinner)
-        val arrivalStationDropdown: Spinner = findViewById(R.id.spinner2)
+        departureStationDropdown = findViewById(R.id.spinner)
+        arrivalStationDropdown = findViewById(R.id.spinner2)
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter.createFromResource(
             this,
@@ -40,7 +42,9 @@ class MainActivity : AppCompatActivity(), ApplicationContract.View {
     }
 
     fun openURL(view: View) {
-        val url = "http://www.example.com"
+        val departureStation=departureStationDropdown.selectedItem.toString()
+        val arrivalStation = arrivalStationDropdown.selectedItem.toString()
+        val url = getAPIURLWithSelectedStations(arrivalStation,departureStation)
         val i = Intent(Intent.ACTION_VIEW)
         i.data = Uri.parse(url)
         startActivity(i)
