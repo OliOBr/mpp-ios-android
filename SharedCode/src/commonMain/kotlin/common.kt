@@ -63,13 +63,22 @@ fun parseJSONElementToTrain(json: JsonElement): Train {
             .toString().replace(Regex("^\"|\"$"), "")
     val destStation: String = json.jsonObject["destinationStation"]!!.jsonObject["displayName"]
             .toString().replace(Regex("^\"|\"$"), "")
-    val departureTime: String = json.jsonObject["departureTime"]
+    val unformattedDepartureTime: String = json.jsonObject["departureTime"]
             .toString().replace(Regex("^\"|\"$"), "")
-    val arrivalTime: String = json.jsonObject["arrivalTime"]
+    val unformattedArrivalTime: String = json.jsonObject["arrivalTime"]
             .toString().replace(Regex("^\"|\"$"), "")
     val status: String = json.jsonObject["status"]
             .toString().replace(Regex("^\"|\"$"), "")
-    return Train(originStation, destStation, departureTime, arrivalTime, status)
+
+    val formattedDepartureTime = formatTimeFromAPI(unformattedDepartureTime)
+    val formattedArrivalTime = formatTimeFromAPI(unformattedArrivalTime)
+
+    return Train(originStation, destStation, formattedDepartureTime, formattedArrivalTime, status)
+}
+
+// TODO: Format these times more nicely. Currently displaying them non-human friendly.
+fun formatTimeFromAPI(unformattedTime: String): String {
+    return unformattedTime
 }
 
 

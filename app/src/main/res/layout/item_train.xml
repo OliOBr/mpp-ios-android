@@ -7,13 +7,31 @@
     android:paddingBottom="10dp"
     >
     <TextView
-        android:id="@+id/departure_station"
+        android:id="@+id/departureStation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         />
     <TextView
-        android:id="@+id/arrival_station"
+        android:id="@+id/arrivalStation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        />
+    <TextView
+        android:id="@+id/departureTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        />
+    <TextView
+        android:id="@+id/arrivalTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        />
+    <TextView
+        android:id="@+id/status"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"

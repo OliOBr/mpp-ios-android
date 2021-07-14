@@ -8,8 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 
 class TrainAdapter(private val trains: List<Train>): RecyclerView.Adapter<TrainAdapter.ViewHolder>(){
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val departureStation: TextView = itemView.findViewById<TextView>(R.id.departure_station)
-        val arrivalStation: TextView = itemView.findViewById<TextView>(R.id.arrival_station)
+        val departureStation: TextView = itemView.findViewById<TextView>(R.id.departureStation)
+        val arrivalStation: TextView = itemView.findViewById<TextView>(R.id.arrivalStation)
+        val departureTime: TextView = itemView.findViewById<TextView>(R.id.departureTime)
+        val arrivalTime: TextView = itemView.findViewById<TextView>(R.id.arrivalTime)
+        val status: TextView = itemView.findViewById<TextView>(R.id.status)
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -29,6 +33,9 @@ class TrainAdapter(private val trains: List<Train>): RecyclerView.Adapter<TrainA
         val train: Train = trains[position]
         holder.arrivalStation.text = train.destinationStation
         holder.departureStation.text = train.originStation
+        holder.departureTime.text = train.departureTime
+        holder.arrivalTime.text = train.arrivalTime
+        holder.status.text = train.status
     }
 
 }

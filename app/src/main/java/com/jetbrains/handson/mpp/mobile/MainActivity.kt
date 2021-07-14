@@ -42,14 +42,14 @@ class MainActivity : AppCompatActivity(), ApplicationContract.View {
         val button: Button = findViewById(R.id.button)
 
         button.setOnClickListener{getData(this)}
-
-
     }
 
     override fun setLabel(text: String) {
         findViewById<TextView>(R.id.main_text).text = text
     }
 
+
+    // TODO: to catch exception for when originDest same as targetDest, or app crashes.
     fun getData(view: ApplicationContract.View) {
         val departureStation=departureStationDropdown.selectedItem.toString()
         val arrivalStation = arrivalStationDropdown.selectedItem.toString()
