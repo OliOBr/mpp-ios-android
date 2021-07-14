@@ -27,9 +27,8 @@ class TrainAdapter(private val trains: List<Train>): RecyclerView.Adapter<TrainA
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val train: Train = trains[position]
-
-        holder.arrivalStation.text = train.arrivalStation
-        holder.departureStation.text = train.departureStation
+        holder.arrivalStation.text = train.destinationStation
+        holder.departureStation.text = train.originStation
     }
 
 }

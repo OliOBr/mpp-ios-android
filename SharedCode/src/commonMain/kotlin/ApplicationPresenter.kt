@@ -24,9 +24,9 @@ class ApplicationPresenter: ApplicationContract.Presenter() {
         return getAPIURLWithSelectedStations(arrivalStation, departureStation)
     }
 
-    override fun getData(url: String):Unit {
+    override fun getData(view: ApplicationContract.View,url: String):Unit {
         scope.launch { // launch a new coroutine and continue
-            makeGetRequestForData(url)
+            makeGetRequestForData(view,url)
         }
     }
 }

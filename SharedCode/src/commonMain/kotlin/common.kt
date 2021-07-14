@@ -1,12 +1,21 @@
 package com.jetbrains.handson.mpp.mobile
 
 import io.ktor.client.*
+import io.ktor.client.call.receive
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
+import io.ktor.http.cio.Response
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.delay
+import kotlinx.serialization.ImplicitReflectionSerializer
+import kotlinx.serialization.StructureKind
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.parse
 
 
 expect fun platformName(): String
@@ -42,10 +51,11 @@ fun stationStringToCRS(station: String): String {
     }
 }
 
-suspend fun makeGetRequestForData(url: String):HttpResponse {
-    val response: HttpResponse = client.get(url)
-    println(response)
-    return response
+suspend fun makeGetRequestForData(view: ApplicationContract.View,url: String):Unit {
+    val response: JsonObject = client.get(url)
+    val trainsList: JsonElement? = response["outboundJourneys"]
+    val journeysList: JsonArray = trainsList!!.jsonArray
+    view.updateTrainsRecycleView(journeysList.map{Train(it.jsonObject["originStation"]!!.jsonObject["displayName"].toString(),it.jsonObject["destinationStation"]!!.jsonObject["displayName"].toString(),it.jsonObject["departureTime"].toString(),it.jsonObject["arrivalTime"].toString())})
 }
 
 
