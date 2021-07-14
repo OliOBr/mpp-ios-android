@@ -6,7 +6,7 @@ import kotlinx.coroutines.CoroutineScope
 interface ApplicationContract {
     interface View {
         fun setLabel(text: String)
-        fun updateTrainsRecycleView(trains: List<Train>)
+        fun updateTrainsRecycleView(newTrains: List<Train>)
     }
 
     abstract class Presenter: CoroutineScope {
