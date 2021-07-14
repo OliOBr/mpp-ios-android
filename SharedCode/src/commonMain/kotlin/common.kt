@@ -55,7 +55,7 @@ suspend fun makeGetRequestForData(view: ApplicationContract.View,url: String):Un
     val response: JsonObject = client.get(url)
     val trainsList: JsonElement? = response["outboundJourneys"]
     val journeysList: JsonArray = trainsList!!.jsonArray
-    view.updateTrainsRecycleView(journeysList.map{Train(it.jsonObject["originStation"]!!.jsonObject["displayName"].toString(),it.jsonObject["destinationStation"]!!.jsonObject["displayName"].toString(),it.jsonObject["departureTime"].toString(),it.jsonObject["arrivalTime"].toString())})
+    view.updateTrainsRecycleView(journeysList.map{Train(it.jsonObject["originStation"]!!.jsonObject["displayName"].toString().replace(Regex("^\"|\"$"), ""),it.jsonObject["destinationStation"]!!.jsonObject["displayName"].toString().replace(Regex("^\"|\"$"), ""),it.jsonObject["departureTime"].toString().replace(Regex("^\"|\"$"), ""),it.jsonObject["arrivalTime"].toString().replace(Regex("^\"|\"$"), ""),it.jsonObject["status"].toString().replace(Regex("^\"|\"$"), ""))})
 }
 
 
