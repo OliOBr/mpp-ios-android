@@ -58,9 +58,9 @@ class MainActivity : AppCompatActivity(), ApplicationContract.View {
         print(presenter.getData(view,url))
     }
 
-    override fun updateTrainsRecycleView(trains: List<Train>) {
+    override fun updateTrainsRecycleView(newTrains: List<Train>) {
         val rvTrains: RecyclerView = findViewById(R.id.rvTrains)
-        val trainAdapter = TrainAdapter(trains)
+        val trainAdapter = TrainAdapter(newTrains)
         rvTrains.adapter = trainAdapter
         rvTrains.layoutManager = LinearLayoutManager(this)
     }
