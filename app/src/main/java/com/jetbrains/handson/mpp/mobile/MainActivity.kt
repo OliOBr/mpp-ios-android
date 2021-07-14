@@ -1,18 +1,21 @@
 package com.jetbrains.handson.mpp.mobile
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+
 
 
 class MainActivity : AppCompatActivity(), ApplicationContract.View {
+
     lateinit var departureStationDropdown: Spinner
     lateinit var arrivalStationDropdown: Spinner
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,18 +38,33 @@ class MainActivity : AppCompatActivity(), ApplicationContract.View {
             departureStationDropdown.adapter = adapter
             arrivalStationDropdown.adapter = adapter
         }
+
+        val button: Button = findViewById(R.id.button)
+
+        button.setOnClickListener{getData(this)}
+
+
     }
 
     override fun setLabel(text: String) {
         findViewById<TextView>(R.id.main_text).text = text
     }
 
-    fun openURL(view: View) {
+    fun getData(view: ApplicationContract.View) {
         val departureStation=departureStationDropdown.selectedItem.toString()
         val arrivalStation = arrivalStationDropdown.selectedItem.toString()
         val url = getAPIURLWithSelectedStations(arrivalStation,departureStation)
-        val i = Intent(Intent.ACTION_VIEW)
-        i.data = Uri.parse(url)
-        startActivity(i)
+        val presenter = ApplicationPresenter()
+        print(presenter.getData(view,url))
     }
+
+    override fun updateTrainsRecycleView(trains: List<Train>) {
+        val rvTrains: RecyclerView = findViewById(R.id.rvTrains)
+        val trainAdapter = TrainAdapter(trains)
+        rvTrains.adapter = trainAdapter
+        rvTrains.layoutManager = LinearLayoutManager(this)
+    }
+
+
+
 }
