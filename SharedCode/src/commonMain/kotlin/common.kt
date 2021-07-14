@@ -51,13 +51,25 @@ fun stationStringToCRS(station: String): String {
     }
 }
 
-suspend fun makeGetRequestForData(view: ApplicationContract.View,url: String):Unit {
+suspend fun makeGetRequestForData(view: ApplicationContract.View, url: String) {
     val response: JsonObject = client.get(url)
     val trainsList: JsonElement? = response["outboundJourneys"]
     val journeysList: JsonArray = trainsList!!.jsonArray
-    view.updateTrainsRecycleView(journeysList.map{Train(it.jsonObject["originStation"]!!.jsonObject["displayName"].toString().replace(Regex("^\"|\"$"), ""),it.jsonObject["destinationStation"]!!.jsonObject["displayName"].toString().replace(Regex("^\"|\"$"), ""),it.jsonObject["departureTime"].toString().replace(Regex("^\"|\"$"), ""),it.jsonObject["arrivalTime"].toString().replace(Regex("^\"|\"$"), ""),it.jsonObject["status"].toString().replace(Regex("^\"|\"$"), ""))})
+    view.updateTrainsRecycleView(journeysList.map{parseJSONElementToTrain(it)})
 }
 
-
+fun parseJSONElementToTrain(json: JsonElement): Train {
+    val originStation: String = json.jsonObject["originStation"]!!.jsonObject["displayName"]
+            .toString().replace(Regex("^\"|\"$"), "")
+    val destStation: String = json.jsonObject["destinationStation"]!!.jsonObject["displayName"]
+            .toString().replace(Regex("^\"|\"$"), "")
+    val departureTime: String = json.jsonObject["departureTime"]
+            .toString().replace(Regex("^\"|\"$"), "")
+    val arrivalTime: String = json.jsonObject["arrivalTime"]
+            .toString().replace(Regex("^\"|\"$"), "")
+    val status: String = json.jsonObject["status"]
+            .toString().replace(Regex("^\"|\"$"), "")
+    return Train(originStation, destStation, departureTime, arrivalTime, status)
+}
 
 
