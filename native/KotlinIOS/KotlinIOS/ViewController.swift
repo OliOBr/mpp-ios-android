@@ -13,7 +13,6 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         return pickerData[row]
     }
 
-    @IBOutlet private var label: UILabel!
     @IBOutlet private var arrivalStationPicker: UIPickerView!
     @IBOutlet private var departureStationPicker: UIPickerView!
     @IBOutlet private var button: UIButton!
@@ -71,6 +70,6 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
 extension ViewController: ApplicationContractView {
     
     func setLabel(text: String) {
-        label.text = text
+        
     }
 }

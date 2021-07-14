@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity(), ApplicationContract.View {
     }
 
     override fun setLabel(text: String) {
-        findViewById<TextView>(R.id.main_text).text = text
+        //findViewById<TextView>(R.id.main_text).text = text
     }
 
 
