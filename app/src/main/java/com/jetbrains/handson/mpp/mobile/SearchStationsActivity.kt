@@ -12,8 +12,10 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.appbar.MaterialToolbar
 
 
-class SearchStations : AppCompatActivity() {
+class SearchStationsActivity : AppCompatActivity() {
+
     lateinit var topAppBar: MaterialToolbar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_stations)
@@ -25,6 +27,7 @@ class SearchStations : AppCompatActivity() {
         }
         val listView = findViewById<ListView>(R.id.listView)
         val searchText = findViewById<EditText>(R.id.searchText)
+
         //TODO: call get stations from presenter and then change createFromResource to suitable ArrayAdapter constructor
         var arrayAdapter = ArrayAdapter.createFromResource(
             this,
@@ -32,14 +35,14 @@ class SearchStations : AppCompatActivity() {
             android.R.layout.simple_list_item_1
         )
         listView.adapter = arrayAdapter
+
         searchText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(
                 s: CharSequence,
                 start: Int,
                 count: Int,
                 after: Int
-            ) {
-            }
+            ) {}
 
             override fun onTextChanged(
                 s: CharSequence,

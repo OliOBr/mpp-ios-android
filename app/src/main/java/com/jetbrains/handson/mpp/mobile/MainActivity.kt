@@ -2,7 +2,6 @@ package com.jetbrains.handson.mpp.mobile
 
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.widget.*
 import androidx.activity.result.*
@@ -44,10 +43,10 @@ override fun onCreate(savedInstanceState: Bundle?) {
         departureStationText = findViewById(R.id.departureStationText)
         arrivalStationText = findViewById(R.id.arrivalStationText)
         departureStationText.setOnClickListener{
-            departureStationStart.launch(Intent(this,SearchStations::class.java))
+            departureStationStart.launch(Intent(this,SearchStationsActivity::class.java))
         }
         arrivalStationText.setOnClickListener{
-            arrivalStationStart.launch(Intent(this,SearchStations::class.java))
+            arrivalStationStart.launch(Intent(this,SearchStationsActivity::class.java))
         }
 
         val button: Button = findViewById(R.id.button)
