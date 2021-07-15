@@ -37,7 +37,6 @@ override fun onCreate(savedInstanceState: Bundle?) {
         setContentView(R.layout.activity_main)
 
         presenter = ApplicationPresenter()
-        presenter.onViewTaken(this)
 
         departureStationText = findViewById(R.id.departureStationText)
         arrivalStationText = findViewById(R.id.arrivalStationText)

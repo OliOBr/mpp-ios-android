@@ -9,16 +9,11 @@ import kotlin.coroutines.CoroutineContext
 class ApplicationPresenter: ApplicationContract.Presenter() {
 
     private val dispatchers = AppDispatchersImpl()
-    private var view: ApplicationContract.View? = null
     private val job: Job = SupervisorJob()
     override val coroutineContext: CoroutineContext
         get() = dispatchers.main + job
 
     private val scope = CoroutineScope(coroutineContext)
-
-    override fun onViewTaken(view: ApplicationContract.View) {
-        this.view = view
-    }
 
     override fun getAPIURLWithSelectedStationsPresenter(arrivalStation: String, departureStation: String): String{
         return getAPIURLWithSelectedStations(arrivalStation, departureStation)
