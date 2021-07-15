@@ -79,20 +79,20 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonLayout"
-    />
+        app:layout_constraintTop_toBottomOf="@+id/buttonLayout" />
 
     <TextView
         android:id="@+id/noJourneysFoundText"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_margin="5dp"
+        android:text="No Journeys found!"
+        android:visibility="gone"
+        android:gravity="center_horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonLayout"
-        android:text="No Journeys found!"
-        android:visibility="gone"
-    />
+        app:layout_constraintTop_toBottomOf="@+id/buttonLayout" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
