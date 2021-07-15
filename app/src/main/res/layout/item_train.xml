@@ -38,7 +38,9 @@
         android:scaleX="-1"
         android:tint="@color/darkGreen"
         android:background="@color/white"
-        app:srcCompat="@drawable/abc_vector_test" />
+        app:srcCompat="@drawable/abc_vector_test"
+
+        android:contentDescription="right arrow"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="0dp"

@@ -20,7 +20,9 @@
             android:background="#0000"
             android:src="@drawable/ic_lnerlogo"
             android:tint="#CE0E2D"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="L N E R"
+            />
     </RelativeLayout>
 
     <TextView
@@ -31,12 +33,19 @@
         android:text="From:"
         android:textAlignment="textStart"
         app:layout_constraintTop_toBottomOf="@+id/imageButtonLayout" />
-
+    <!--
     <Spinner
         android:id="@+id/spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/fromText" />
+    -->
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/departureStationText"
+        app:layout_constraintTop_toBottomOf="@+id/fromText"
+        android:focusable="false"/>
 
     <TextView
         android:id="@+id/toText"
@@ -45,20 +54,20 @@
         android:layout_height="wrap_content"
         android:text="To:"
         android:textAlignment="textStart"
-        app:layout_constraintTop_toBottomOf="@+id/spinner" />
+        app:layout_constraintTop_toBottomOf="@+id/departureStationText" />
 
-    <Spinner
-        android:id="@+id/spinner2"
+    <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/arrivalStationText"
         app:layout_constraintTop_toBottomOf="@+id/toText"
-        tools:layout_editor_absoluteX="0dp" />
+        android:focusable="false"/>
 
     <RelativeLayout
         android:id="@+id/buttonLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/spinner2">
+        app:layout_constraintTop_toBottomOf="@+id/arrivalStationText">
 
         <Button
             android:id="@+id/button"
