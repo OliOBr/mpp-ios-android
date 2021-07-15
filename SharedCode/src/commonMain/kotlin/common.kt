@@ -63,10 +63,10 @@ fun parseJSONElementToTrain(json: JsonElement): Train {
             .toString().replace(Regex("^\"|\"$"), "")
     val destStation: String = json.jsonObject["destinationStation"]!!.jsonObject["displayName"]
             .toString().replace(Regex("^\"|\"$"), "")
-    val unformattedDepartureTime: String = json.jsonObject["departureTime"]
-            .toString().replace(Regex("^\"|\"$"), "")
-    val unformattedArrivalTime: String = json.jsonObject["arrivalTime"]
-            .toString().replace(Regex("^\"|\"$"), "")
+    val unformattedDepartureTime: String = Regex("(?<=T)(.{5})").find(json.jsonObject["departureTime"]
+        .toString())!!.value
+    val unformattedArrivalTime: String = Regex("(?<=T)(.{5})").find(json.jsonObject["arrivalTime"]
+            .toString())!!.value
     val status: String = json.jsonObject["status"]
             .toString().replace(Regex("^\"|\"$"), "")
 

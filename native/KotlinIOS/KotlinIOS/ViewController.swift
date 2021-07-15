@@ -13,7 +13,6 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         return pickerData[row]
     }
 
-    @IBOutlet private var label: UILabel!
     @IBOutlet private var arrivalStationPicker: UIPickerView!
     @IBOutlet private var departureStationPicker: UIPickerView!
     @IBOutlet private var button: UIButton!
@@ -58,7 +57,9 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         
         cell.arrivalTimeText.text = self.trains[indexPath.row].arrivalTime
         cell.departureTimeText.text = self.trains[indexPath.row].departureTime
-         
+        cell.destinationStationText.text =  self.trains[indexPath.row].destinationStation
+        cell.originStationText.text = self.trains[indexPath.row].originStation
+        cell.statusText.text = self.trains[indexPath.row].status
         return cell
      }
     
@@ -71,6 +72,6 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
 extension ViewController: ApplicationContractView {
     
     func setLabel(text: String) {
-        label.text = text
+        
     }
 }
