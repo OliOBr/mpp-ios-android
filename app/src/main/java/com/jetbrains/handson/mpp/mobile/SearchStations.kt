@@ -25,6 +25,7 @@ class SearchStations : AppCompatActivity() {
         }
         val listView = findViewById<ListView>(R.id.listView)
         val searchText = findViewById<EditText>(R.id.searchText)
+        //TODO: call get stations from presenter and then change createFromResource to suitable ArrayAdapter constructor
         var arrayAdapter = ArrayAdapter.createFromResource(
             this,
             R.array.stations_array,

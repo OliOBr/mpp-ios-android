@@ -1,24 +1,13 @@
 import UIKit
 import SharedCode
 
-class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate,  UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate {
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {return pickerData.count}
-
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return pickerData[row]
-    }
+class ViewController: UIViewController,  UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate {
 
     @IBOutlet var originStationSelector: UITextField!
     @IBOutlet var destinationStationSelector: UITextField!
     @IBOutlet private var button: UIButton!
     @IBOutlet var tableView: UITableView!
     var senderID: String = ""
-    var pickerData: [String] = [String]()
     let cellReuseIdentifier = "JourneyCellType"
     var trains: [Train] = []
 
@@ -29,9 +18,8 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         presenter.onViewTaken(view: self)
         tableView.delegate = self
         tableView.dataSource = self
-        pickerData = ["Newton Abbot","Waterloo","Durham","Cambridge", "Paddington"]
     }
-    
+    //TODO: Breaks if empty or if same station or if no routes between station
     @IBAction func onClickButton() {
         let destinationStation = destinationStationSelector.text!
         let originStation = originStationSelector.text!

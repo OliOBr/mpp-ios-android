@@ -66,7 +66,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
         val arrivalStation = arrivalStationText.text.toString()
         val url = getAPIURLWithSelectedStations(arrivalStation,departureStation)
         val presenter = ApplicationPresenter()
-        print(presenter.getData(view,url))
+        presenter.getData(view,url)
     }
 
     override fun updateTrainsRecycleView(newTrains: List<Train>) {
