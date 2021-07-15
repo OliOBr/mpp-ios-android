@@ -57,7 +57,9 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         
         cell.arrivalTimeText.text = self.trains[indexPath.row].arrivalTime
         cell.departureTimeText.text = self.trains[indexPath.row].departureTime
-         
+        cell.destinationStationText.text =  self.trains[indexPath.row].destinationStation
+        cell.originStationText.text = self.trains[indexPath.row].originStation
+        cell.statusText.text = self.trains[indexPath.row].status
         return cell
      }
     
