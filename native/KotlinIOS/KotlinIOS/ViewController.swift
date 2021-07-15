@@ -36,9 +36,9 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     }
     
     @IBAction func onClickButton() {
-        let arrivalStation = pickerData[arrivalStationPicker.selectedRow(inComponent: 0)]
-        let departureStation = pickerData[departureStationPicker.selectedRow(inComponent: 0)]
-        let url = presenter.getAPIURLWithSelectedStationsPresenter(arrivalStation: arrivalStation,departureStation: departureStation)
+        let originStation = pickerData[arrivalStationPicker.selectedRow(inComponent: 0)]
+        let destinationStation = pickerData[departureStationPicker.selectedRow(inComponent: 0)]
+        let url = presenter.getAPIURLWithSelectedStationsPresenter(arrivalStation: destinationStation,departureStation: originStation)
         presenter.getData(view: self, url: url)
     }
     
@@ -64,7 +64,7 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
      }
     
     func updateTrainsRecycleView(newTrains: [Train]) {
-        trains = trains + newTrains
+        trains = newTrains
         tableView.reloadData()
     }
 }
