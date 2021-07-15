@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class JourneyAdapter(private val journeys: List<Journey>): RecyclerView.Adapter<JourneyAdapter.ViewHolder>(){
+class JourneysAdapter(private val journeys: List<Journey>): RecyclerView.Adapter<JourneysAdapter.ViewHolder>(){
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val departureStation: TextView = itemView.findViewById<TextView>(R.id.departureStation)
         val arrivalStation: TextView = itemView.findViewById<TextView>(R.id.arrivalStation)
@@ -20,7 +20,7 @@ class JourneyAdapter(private val journeys: List<Journey>): RecyclerView.Adapter<
         val context = parent.context
         val inflater = LayoutInflater.from(context)
         // Inflate the custom layout
-        val contactView = inflater.inflate(R.layout.item_train, parent, false)
+        val contactView = inflater.inflate(R.layout.item_journey, parent, false)
         // Return a new holder instance
         return ViewHolder(contactView)
     }
