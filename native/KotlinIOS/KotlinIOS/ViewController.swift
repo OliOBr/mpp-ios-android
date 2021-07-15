@@ -1,7 +1,7 @@
 import UIKit
 import SharedCode
 
-class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate,  UITableViewDelegate, UITableViewDataSource {
+class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate,  UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
@@ -13,10 +13,11 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         return pickerData[row]
     }
 
-    @IBOutlet private var arrivalStationPicker: UIPickerView!
-    @IBOutlet private var departureStationPicker: UIPickerView!
+    @IBOutlet var originStationSelector: UITextField!
+    @IBOutlet var destinationStationSelector: UITextField!
     @IBOutlet private var button: UIButton!
     @IBOutlet var tableView: UITableView!
+    var senderID: String = ""
     var pickerData: [String] = [String]()
     let cellReuseIdentifier = "JourneyCellType"
     var trains: [Train] = []
@@ -26,18 +27,14 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter.onViewTaken(view: self)
-        arrivalStationPicker.delegate = self
-        arrivalStationPicker.dataSource = self
-        departureStationPicker.delegate = self
-        departureStationPicker.dataSource = self
         tableView.delegate = self
         tableView.dataSource = self
         pickerData = ["Newton Abbot","Waterloo","Durham","Cambridge", "Paddington"]
     }
     
     @IBAction func onClickButton() {
-        let originStation = pickerData[arrivalStationPicker.selectedRow(inComponent: 0)]
-        let destinationStation = pickerData[departureStationPicker.selectedRow(inComponent: 0)]
+        let destinationStation = destinationStationSelector.text!
+        let originStation = originStationSelector.text!
         let url = presenter.getAPIURLWithSelectedStationsPresenter(arrivalStation: destinationStation,departureStation: originStation)
         presenter.getData(view: self, url: url)
     }
@@ -66,6 +63,35 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     func updateTrainsRecycleView(newTrains: [Train]) {
         trains = newTrains
         tableView.reloadData()
+    }
+
+    @IBAction func editingChangedDestinationText(_ textField: UITextField) {
+        senderID = "fromText"
+        performSegue(withIdentifier: "SegueToSearch", sender: self)
+    }
+    @IBAction func onTouchDestinationText(_ sender: Any) {
+        senderID = "fromText"
+        performSegue(withIdentifier: "SegueToSearch", sender: self)
+    }
+    
+    @IBAction func editingChangesArrivalText(_ sender: Any) {
+        senderID = "toText"
+        performSegue(withIdentifier: "SegueToSearch", sender: self)
+    }
+    
+    @IBAction func onTouchArrivalText(_ sender: Any) {
+        senderID = "toText"
+        performSegue(withIdentifier: "SegueToSearch", sender: self)
+    }
+    // segue ViewControllerB -> ViewController
+    @IBAction func unwind( _ sender: UIStoryboardSegue) {
+        if let sourceViewController = sender.source as? SearchController {
+            if(senderID == "fromText") {
+            originStationSelector.text = sourceViewController.stationSelected
+            } else {
+                destinationStationSelector.text = sourceViewController.stationSelected
+            }
+        }
     }
 }
 
