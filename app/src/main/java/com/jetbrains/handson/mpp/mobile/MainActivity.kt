@@ -52,7 +52,6 @@ override fun onCreate(savedInstanceState: Bundle?) {
         button.setOnClickListener{getAndDisplayJourneysData(this)}
     }
 
-    // TODO: to catch exception for when originDest same as targetDest, or app crashes.
     override fun getAndDisplayJourneysData(view: ApplicationContract.View) {
         val departureStation = departureStationText.text.toString()
         val arrivalStation = arrivalStationText.text.toString()
@@ -60,19 +59,17 @@ override fun onCreate(savedInstanceState: Bundle?) {
         presenter.getAndDisplayJourneysData(view, url)
     }
 
-    override fun displayJourneysInRecyclerView(newTrains: List<Train>) {
+    override fun displayJourneysInRecyclerView(journeysData: List<Journey>) {
         val rvTrains: RecyclerView = findViewById(R.id.rvTrains)
-        if (newTrains.isEmpty()) {
+        if (journeysData.isEmpty()) {
             val noJourneysFoundText: TextView = findViewById(R.id.noJourneysFoundText)
             noJourneysFoundText.visibility = View.VISIBLE
             rvTrains.visibility = View.GONE
             return
         }
-        val trainAdapter = TrainAdapter(newTrains)
-        rvTrains.adapter = trainAdapter
+        val journeysAdapter = JourneysAdapter(journeysData)
+        rvTrains.adapter = journeysAdapter
         rvTrains.layoutManager = LinearLayoutManager(this)
     }
-
-
 
 }

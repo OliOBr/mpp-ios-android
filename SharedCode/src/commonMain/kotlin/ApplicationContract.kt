@@ -5,7 +5,7 @@ import kotlinx.coroutines.CoroutineScope
 interface ApplicationContract {
     interface View {
         fun getAndDisplayJourneysData(view: ApplicationContract.View)
-        fun displayJourneysInRecyclerView(newTrains: List<Train>)
+        fun displayJourneysInRecyclerView(journeysData: List<Journey>)
     }
 
     abstract class Presenter: CoroutineScope {

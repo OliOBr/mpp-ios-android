@@ -59,7 +59,7 @@ suspend fun makeGetRequestForJourneysData(url: String): JsonArray {
     return JsonArray(listOf())
 }
 
-fun parseJSONElementToTrain(json: JsonElement): Train {
+fun parseJSONElementToJourney(json: JsonElement): Journey {
     val originStation: String = json.jsonObject["originStation"]!!.jsonObject["displayName"]
             .toString().replace(Regex("^\"|\"$"), "")
     val destStation: String = json.jsonObject["destinationStation"]!!.jsonObject["displayName"]
@@ -71,7 +71,7 @@ fun parseJSONElementToTrain(json: JsonElement): Train {
     val status: String = json.jsonObject["status"]
             .toString().replace(Regex("^\"|\"$"), "")
 
-    return Train(originStation, destStation, departureTime, arrivalTime, status)
+    return Journey(originStation, destStation, departureTime, arrivalTime, status)
 }
 
 

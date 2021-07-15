@@ -27,7 +27,7 @@ class ApplicationPresenter: ApplicationContract.Presenter() {
     override fun getAndDisplayJourneysData(view: ApplicationContract.View, url: String) {
         scope.launch { // launch a new coroutine and continue
             val journeysData: JsonArray = makeGetRequestForJourneysData(url)
-            view.displayJourneysInRecyclerView(journeysData.map{parseJSONElementToTrain(it)})
+            view.displayJourneysInRecyclerView(journeysData.map{parseJSONElementToJourney(it)})
         }
     }
 }
