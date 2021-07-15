@@ -27,10 +27,6 @@ val client = HttpClient(){
     }
 }
 
-fun createApplicationScreenMessage(): String {
-    return "Kotlin Rocks on ${platformName()}"
-}
-
 fun getAPIURLWithSelectedStations(arrivalStation: String, departureStation: String): String {
     val arrivalStationCRS = stationStringToCRS(arrivalStation)
     val departureStationCRS = stationStringToCRS(departureStation)
@@ -51,11 +47,16 @@ fun stationStringToCRS(station: String): String {
     }
 }
 
-suspend fun makeGetRequestForData(view: ApplicationContract.View, url: String) {
-    val response: JsonObject = client.get(url)
-    val trainsList: JsonElement? = response["outboundJourneys"]
-    val journeysList: JsonArray = trainsList!!.jsonArray
-    view.updateTrainsRecycleView(journeysList.map{parseJSONElementToTrain(it)})
+suspend fun makeGetRequestForJourneysData(url: String): JsonArray {
+    try {
+        val response: JsonObject = client.get(url)
+        println(response)
+        val trainsList: JsonElement? = response["outboundJourneys"]
+        return trainsList!!.jsonArray
+    } catch (e: Exception) {
+        println("Error getting JourneysData from API.")
+    }
+    return JsonArray(listOf())
 }
 
 fun parseJSONElementToTrain(json: JsonElement): Train {
@@ -63,22 +64,15 @@ fun parseJSONElementToTrain(json: JsonElement): Train {
             .toString().replace(Regex("^\"|\"$"), "")
     val destStation: String = json.jsonObject["destinationStation"]!!.jsonObject["displayName"]
             .toString().replace(Regex("^\"|\"$"), "")
-    val unformattedDepartureTime: String = Regex("(?<=T)(.{5})").find(json.jsonObject["departureTime"]
+    val departureTime: String = Regex("(?<=T)(.{5})").find(json.jsonObject["departureTime"]
         .toString())!!.value
-    val unformattedArrivalTime: String = Regex("(?<=T)(.{5})").find(json.jsonObject["arrivalTime"]
+    val arrivalTime: String = Regex("(?<=T)(.{5})").find(json.jsonObject["arrivalTime"]
             .toString())!!.value
     val status: String = json.jsonObject["status"]
             .toString().replace(Regex("^\"|\"$"), "")
 
-    val formattedDepartureTime = formatTimeFromAPI(unformattedDepartureTime)
-    val formattedArrivalTime = formatTimeFromAPI(unformattedArrivalTime)
-
-    return Train(originStation, destStation, formattedDepartureTime, formattedArrivalTime, status)
+    return Train(originStation, destStation, departureTime, arrivalTime, status)
 }
 
-// TODO: Format these times more nicely. Currently displaying them non-human friendly.
-fun formatTimeFromAPI(unformattedTime: String): String {
-    return unformattedTime
-}
 
 

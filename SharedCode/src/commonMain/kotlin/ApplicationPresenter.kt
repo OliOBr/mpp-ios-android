@@ -2,6 +2,7 @@ package com.jetbrains.handson.mpp.mobile
 
 import io.ktor.client.statement.HttpResponse
 import kotlinx.coroutines.*
+import kotlinx.serialization.json.JsonArray
 import kotlin.coroutines.CoroutineContext
 
 
@@ -17,16 +18,16 @@ class ApplicationPresenter: ApplicationContract.Presenter() {
 
     override fun onViewTaken(view: ApplicationContract.View) {
         this.view = view
-        view.setLabel(createApplicationScreenMessage())
     }
 
     override fun getAPIURLWithSelectedStationsPresenter(arrivalStation: String, departureStation: String): String{
         return getAPIURLWithSelectedStations(arrivalStation, departureStation)
     }
 
-    override fun getData(view: ApplicationContract.View,url: String):Unit {
+    override fun getAndDisplayJourneysData(view: ApplicationContract.View, url: String) {
         scope.launch { // launch a new coroutine and continue
-            makeGetRequestForData(view,url)
+            val journeysData: JsonArray = makeGetRequestForJourneysData(url)
+            view.displayJourneysInRecyclerView(journeysData.map{parseJSONElementToTrain(it)})
         }
     }
 }
