@@ -9,7 +9,7 @@ class ViewController: UIViewController,  UITableViewDelegate, UITableViewDataSou
     @IBOutlet var tableView: UITableView!
     var senderID: String = ""
     let cellReuseIdentifier = "JourneyCellType"
-    var trains: [Train] = []
+    var journeys: [Journey] = []
 
     private let presenter: ApplicationContractPresenter = ApplicationPresenter()
     
@@ -19,17 +19,18 @@ class ViewController: UIViewController,  UITableViewDelegate, UITableViewDataSou
         tableView.delegate = self
         tableView.dataSource = self
     }
+    
     //TODO: Breaks if empty or if same station or if no routes between station
     @IBAction func onClickButton() {
         let destinationStation = destinationStationSelector.text!
         let originStation = originStationSelector.text!
         let url = presenter.getAPIURLWithSelectedStationsPresenter(arrivalStation: destinationStation,departureStation: originStation)
-        presenter.getData(view: self, url: url)
+        presenter.getAndDisplayJourneysData(view: self, url: url)
     }
     
     // number of rows in table view
      func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-         return self.trains.count
+         return self.journeys.count
      }
      
      // create a cell for each table view row
@@ -40,16 +41,16 @@ class ViewController: UIViewController,  UITableViewDelegate, UITableViewDataSou
          
          // set the text from the data model
         
-        cell.arrivalTimeText.text = self.trains[indexPath.row].arrivalTime
-        cell.departureTimeText.text = self.trains[indexPath.row].departureTime
-        cell.destinationStationText.text =  self.trains[indexPath.row].destinationStation
-        cell.originStationText.text = self.trains[indexPath.row].originStation
-        cell.statusText.text = self.trains[indexPath.row].status
+        cell.arrivalTimeText.text = self.journeys[indexPath.row].arrivalTime
+        cell.departureTimeText.text = self.journeys[indexPath.row].departureTime
+        cell.destinationStationText.text =  self.journeys[indexPath.row].destinationStation
+        cell.originStationText.text = self.journeys[indexPath.row].originStation
+        cell.statusText.text = self.journeys[indexPath.row].status
         return cell
      }
     
-    func updateTrainsRecycleView(newTrains: [Train]) {
-        trains = newTrains
+    func displayJourneysInRecyclerView(journeysData: [Journey]) {
+        journeys = journeysData
         tableView.reloadData()
     }
 
@@ -83,9 +84,3 @@ class ViewController: UIViewController,  UITableViewDelegate, UITableViewDataSou
     }
 }
 
-extension ViewController: ApplicationContractView {
-    
-    func setLabel(text: String) {
-        
-    }
-}

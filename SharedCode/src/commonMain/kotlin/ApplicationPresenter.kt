@@ -1,6 +1,5 @@
 package com.jetbrains.handson.mpp.mobile
 
-import io.ktor.client.statement.HttpResponse
 import kotlinx.coroutines.*
 import kotlinx.serialization.json.JsonArray
 import kotlin.coroutines.CoroutineContext
@@ -15,14 +14,18 @@ class ApplicationPresenter: ApplicationContract.Presenter() {
 
     private val scope = CoroutineScope(coroutineContext)
 
-    override fun getAPIURLWithSelectedStationsPresenter(arrivalStation: String, departureStation: String): String{
-        return getAPIURLWithSelectedStations(arrivalStation, departureStation)
+    override fun getAndDisplayJourneysData(view: ApplicationContract.MainView, arrivalStation: String, departureStation: String) {
+        scope.launch { // launch a new coroutine and continue
+            val journeysData: JsonArray = makeGetRequestForJourneysData(getAPIURLWithSelectedStations(arrivalStation, departureStation))
+            view.displayJourneysInRecyclerView(journeysData.map{parseJSONElementToJourney(it)})
+        }
     }
 
-    override fun getAndDisplayJourneysData(view: ApplicationContract.View, url: String) {
+    override fun getAndListStationsData(view: ApplicationContract.SearchStationsView, url: String) {
         scope.launch { // launch a new coroutine and continue
-            val journeysData: JsonArray = makeGetRequestForJourneysData(url)
-            view.displayJourneysInRecyclerView(journeysData.map{parseJSONElementToJourney(it)})
+            val stationsData: JsonArray = makeGetRequestForStationsData(url)
+            view.listStationsInListView(stationsData.map{ parseJSONElementToStation(it) }
+                    .filter{it.crs!="null"}.sortedBy { it.stationName })
         }
     }
 }

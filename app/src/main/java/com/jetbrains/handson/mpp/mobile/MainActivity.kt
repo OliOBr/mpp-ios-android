@@ -11,17 +11,21 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class MainActivity : AppCompatActivity(), ApplicationContract.View {
+class MainActivity : AppCompatActivity(), ApplicationContract.MainView {
 
     lateinit var departureStationText: EditText
     lateinit var arrivalStationText: EditText
 
     lateinit var presenter: ApplicationPresenter
 
+    var originStationCRS = ""
+    var destStationCRS = ""
+
     private val departureStationStart = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
     { result: ActivityResult ->
         if (result.resultCode == Activity.RESULT_OK) {
             departureStationText.setText(result.data!!.getStringExtra("Result"))
+            originStationCRS = result.data!!.getStringExtra("ResultCRS")
         }
     }
 
@@ -29,6 +33,7 @@ class MainActivity : AppCompatActivity(), ApplicationContract.View {
     { result: ActivityResult ->
         if (result.resultCode == Activity.RESULT_OK) {
             arrivalStationText.setText(result.data!!.getStringExtra("Result"))
+            destStationCRS = result.data!!.getStringExtra("ResultCRS")
         }
     }
 
@@ -48,14 +53,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
         }
 
         val button: Button = findViewById(R.id.button)
-        button.setOnClickListener{getAndDisplayJourneysData(this)}
-    }
-
-    override fun getAndDisplayJourneysData(view: ApplicationContract.View) {
-        val departureStation = departureStationText.text.toString()
-        val arrivalStation = arrivalStationText.text.toString()
-        val url = getAPIURLWithSelectedStations(arrivalStation, departureStation)
-        presenter.getAndDisplayJourneysData(view, url)
+        button.setOnClickListener{presenter.getAndDisplayJourneysData(this, originStationCRS, destStationCRS)}
     }
 
     override fun displayJourneysInRecyclerView(journeysData: List<Journey>) {
