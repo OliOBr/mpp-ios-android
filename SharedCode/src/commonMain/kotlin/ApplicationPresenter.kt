@@ -24,7 +24,7 @@ class ApplicationPresenter: ApplicationContract.Presenter() {
     override fun getAndListStationsData(view: ApplicationContract.SearchStationsView, url: String) {
         scope.launch { // launch a new coroutine and continue
             val stationsData: List<Station> = makeGetRequestForStationsData(url)
-            view.listStationsInListView(stationsData.filter{it.crs!="null"}.sortedBy { it.stationName })
+            view.listStationsInListView(stationsData.filter{it.crs!=null}.sortedBy { it.stationName })
         }
     }
 }
