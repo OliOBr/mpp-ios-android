@@ -1,17 +1,18 @@
 package com.jetbrains.handson.mpp.mobile
 
-import io.ktor.client.statement.HttpResponse
 import kotlinx.coroutines.CoroutineScope
 
 interface ApplicationContract {
-    interface View {
-        fun setLabel(text: String)
-        fun updateTrainsRecycleView(newTrains: List<Train>)
+    interface MainView {
+        fun displayJourneysInRecyclerView(journeysData: List<Journey>)
+    }
+
+    interface SearchStationsView {
+        fun listStationsInListView(view: List<Station>)
     }
 
     abstract class Presenter: CoroutineScope {
-        abstract fun onViewTaken(view: View)
-        abstract fun getData(view: ApplicationContract.View,url: String)
-        abstract fun getAPIURLWithSelectedStationsPresenter(arrivalStation: String, departureStation: String): String
+        abstract fun getAndDisplayJourneysData(view: ApplicationContract.MainView, arrivalStation: String, departureStation: String)
+        abstract fun getAndListStationsData(view: ApplicationContract.SearchStationsView, url: String)
     }
 }

@@ -2,8 +2,8 @@ package com.jetbrains.handson.mpp.mobile
 
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.widget.*
 import androidx.activity.result.*
 import androidx.activity.result.contract.ActivityResultContracts
@@ -11,71 +11,62 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-
-
-class MainActivity : AppCompatActivity(), ApplicationContract.View {
+class MainActivity : AppCompatActivity(), ApplicationContract.MainView {
 
     lateinit var departureStationText: EditText
     lateinit var arrivalStationText: EditText
 
-    val departureStationStart = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+    lateinit var presenter: ApplicationPresenter
+
+    var originStationCRS = ""
+    var destStationCRS = ""
+
+    private val departureStationStart = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
     { result: ActivityResult ->
         if (result.resultCode == Activity.RESULT_OK) {
             departureStationText.setText(result.data!!.getStringExtra("Result"))
+            originStationCRS = result.data!!.getStringExtra("ResultCRS")
         }
     }
 
-    val arrivalStationStart = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+    private val arrivalStationStart = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
     { result: ActivityResult ->
         if (result.resultCode == Activity.RESULT_OK) {
             arrivalStationText.setText(result.data!!.getStringExtra("Result"))
+            destStationCRS = result.data!!.getStringExtra("ResultCRS")
         }
     }
-
-
 
 override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val presenter = ApplicationPresenter()
-        presenter.onViewTaken(this)
+        presenter = ApplicationPresenter()
 
         departureStationText = findViewById(R.id.departureStationText)
         arrivalStationText = findViewById(R.id.arrivalStationText)
         departureStationText.setOnClickListener{
-            departureStationStart.launch(Intent(this,SearchStations::class.java))
+            departureStationStart.launch(Intent(this,SearchStationsActivity::class.java))
         }
         arrivalStationText.setOnClickListener{
-            arrivalStationStart.launch(Intent(this,SearchStations::class.java))
+            arrivalStationStart.launch(Intent(this,SearchStationsActivity::class.java))
         }
 
         val button: Button = findViewById(R.id.button)
-
-        button.setOnClickListener{getData(this)}
+        button.setOnClickListener{presenter.getAndDisplayJourneysData(this, originStationCRS, destStationCRS)}
     }
 
-    override fun setLabel(text: String) {
-        //findViewById<TextView>(R.id.main_text).text = text
-    }
-
-
-    // TODO: to catch exception for when originDest same as targetDest, or app crashes.
-    fun getData(view: ApplicationContract.View) {
-        val departureStation=departureStationText.text.toString()
-        val arrivalStation = arrivalStationText.text.toString()
-        val url = getAPIURLWithSelectedStations(arrivalStation,departureStation)
-        val presenter = ApplicationPresenter()
-        presenter.getData(view,url)
-    }
-
-    override fun updateTrainsRecycleView(newTrains: List<Train>) {
+    override fun displayJourneysInRecyclerView(journeysData: List<Journey>) {
         val rvTrains: RecyclerView = findViewById(R.id.rvTrains)
-        val trainAdapter = TrainAdapter(newTrains)
-        rvTrains.adapter = trainAdapter
+        if (journeysData.isEmpty()) {
+            val noJourneysFoundText: TextView = findViewById(R.id.noJourneysFoundText)
+            noJourneysFoundText.visibility = View.VISIBLE
+            rvTrains.visibility = View.GONE
+            return
+        }
+        val journeysAdapter = JourneysAdapter(journeysData)
+        rvTrains.adapter = journeysAdapter
         rvTrains.layoutManager = LinearLayoutManager(this)
     }
-
-
 
 }
