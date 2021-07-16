@@ -31,10 +31,10 @@ class JourneysAdapter(private val journeys: List<Journey>): RecyclerView.Adapter
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val journey: Journey = journeys[position]
-        holder.arrivalStation.text = journey.destinationStation
-        holder.departureStation.text = journey.originStation
-        holder.departureTime.text = journey.departureTime
-        holder.arrivalTime.text = journey.arrivalTime
+        holder.arrivalStation.text = journey.destinationStation.stationName
+        holder.departureStation.text = journey.originStation.stationName
+        holder.departureTime.text = journey.formattedDepartureTime
+        holder.arrivalTime.text = journey.formattedArrivalTime
         holder.status.text = journey.status
     }
 

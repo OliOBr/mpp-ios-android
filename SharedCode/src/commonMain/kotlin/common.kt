@@ -4,15 +4,20 @@ import io.ktor.client.*
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.request.*
+import kotlinx.serialization.*
+import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 
 expect fun platformName(): String
 
-val client = HttpClient(){
+val client = HttpClient() {
     install(JsonFeature) {
-        serializer = KotlinxSerializer()
+        serializer = KotlinxSerializer(Json{
+            ignoreUnknownKeys = true
+            isLenient = true
+        })
     }
 }
 
@@ -23,63 +28,57 @@ fun getAPIURLWithSelectedStations(originStationCRS: String, destStationCRS: Stri
             "&outboundDateTime=2021-07-24T14%3A30%3A00.000%2B01%3A00&outboundIsArriveBy=false"
 }
 
-suspend fun makeGetRequestForJourneysData(url: String): JsonArray {
+suspend fun makeGetRequestForJourneysData(url: String): List<Journey> {
     println("calling makeGetRequestForJourneysData()")
     try {
-        val response: JsonObject = client.get(url)
-        println(response)
-        val trainsList: JsonElement? = response["outboundJourneys"]
-        return trainsList!!.jsonArray
+        val response: JourneyCollection = client.get(url)
+        return response.outboundJourneys
     } catch (e: Exception) {
         println("Error getting JourneysData from API.")
         println(e.message)
     }
-    return JsonArray(listOf())
+    return listOf<Journey>()
 }
 
-suspend fun makeGetRequestForStationsData(url: String): JsonArray {
+suspend fun makeGetRequestForStationsData(url: String): List<Station> {
     println("calling makeGetRequestForStationsData()")
     try {
-        val response: JsonObject = client.get(url)
-        val stations: JsonElement? = response["stations"]
-        println(response)
-        return stations!!.jsonArray
+        val response: StationCollection = client.get(url)
+
+        return response.stations
     } catch (e: Exception) {
         println("Error getting StationsData from API.")
         println(e)
     }
-    return JsonArray(listOf())
+    return listOf()
 }
 
-fun parseJSONElementToJourney(json: JsonElement): Journey {
-    val originStation: String = json.jsonObject["originStation"]!!.jsonObject["displayName"]
-            .toString().replace(Regex("^\"|\"$"), "")
-    val destStation: String = json.jsonObject["destinationStation"]!!.jsonObject["displayName"]
-            .toString().replace(Regex("^\"|\"$"), "")
-    val departureTime: String = Regex("(?<=T)(.{5})").find(json.jsonObject["departureTime"]
-        .toString())!!.value
-    val arrivalTime: String = Regex("(?<=T)(.{5})").find(json.jsonObject["arrivalTime"]
-            .toString())!!.value
-    val status: String = json.jsonObject["status"]
-            .toString().replace(Regex("^\"|\"$"), "")
+@Serializable
+data class StationCollection(val stations: List<Station>)
 
-    // TODO: Add ticket prices to Table
-    val tickets: String = json.jsonObject["tickets"].toString()
+@Serializable
+data class JourneyCollection(val outboundJourneys: List<Journey>)
 
-    return Journey(originStation, destStation, departureTime, arrivalTime, status)
+@Serializable
+data class Journey(val journeyId: String,
+                   val departureTime: String,
+                   val arrivalTime: String,
+                   val originStation: Station,
+                   val destinationStation: Station,
+                   val isFastestJourney: Boolean,
+                   val journeyDurationInMinutes: Int,
+                   val primaryTrainOperator: Map<String, String>,
+                   val status: String) {
+    val formattedArrivalTime = Regex("(?<=T)(.{5})").find(arrivalTime)!!.value
+    val formattedDepartureTime = Regex("(?<=T)(.{5})").find(departureTime)!!.value
 }
 
-fun parseJSONElementToStation(json: JsonElement): Station {
+@Serializable
+data class Station(val name: String = "", val displayName: String = "", val nlc: String?, val crs: String?) {
+    val stationName = if (!name.isNullOrEmpty()){name}else{displayName}
 
-    val stationName: String = json.jsonObject["name"]!!
-            .toString().replace(Regex("^\"|\"$"), "")
-    val crs: String = json.jsonObject["crs"]!!
-            .toString().replace(Regex("^\"|\"$"), "")
-    val nlc: String = json.jsonObject["nlc"]!!
-            .toString().replace(Regex("^\"|\"$"), "")
-
-    return Station(stationName, nlc, crs)
+    override fun toString(): String {
+        return stationName
+    }
 }
-
-
 
