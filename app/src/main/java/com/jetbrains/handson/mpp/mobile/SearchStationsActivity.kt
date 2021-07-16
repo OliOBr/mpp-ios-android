@@ -1,17 +1,12 @@
 package com.jetbrains.handson.mpp.mobile
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.View
-import android.widget.ArrayAdapter
 import android.widget.EditText
-import android.widget.ListView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.MaterialToolbar
 
@@ -24,8 +19,9 @@ class SearchStationsActivity : AppCompatActivity(), ApplicationContract.SearchSt
 
     private val urlForStationsData: String = "https://mobile-api-softwire2.lner.co.uk/v1/stations"
     private var stations: MutableList<Station> = mutableListOf()
+    private var filteredStations: MutableList<Station> = mutableListOf()
 
-    lateinit var adapter: ArrayAdapter<Station>
+    lateinit var adapter: StationsAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,11 +36,11 @@ class SearchStationsActivity : AppCompatActivity(), ApplicationContract.SearchSt
 
         presenter = ApplicationPresenter()
         presenter.getAndListStationsData(this, urlForStationsData)
-
-        val listView = findViewById<ListView>(R.id.listView)
+        filteredStations = stations
+        val listView = findViewById<RecyclerView>(R.id.listView)
         val searchText = findViewById<EditText>(R.id.searchText)
 
-        adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, stations)
+        adapter = StationsAdapter(filteredStations,this)
         listView.adapter = adapter
 
         searchText.addTextChangedListener(object : TextWatcher {
@@ -60,23 +56,18 @@ class SearchStationsActivity : AppCompatActivity(), ApplicationContract.SearchSt
                 before: Int,
                 count: Int
             ) {
-                adapter.filter.filter(s)
+                filteredStations.clear()
+                filteredStations = stations.toList().filter{it.stationName.contains(s)}.toMutableList()
+                adapter.setItems(filteredStations)
+                adapter.notifyDataSetChanged()
             }
             override fun afterTextChanged(s: Editable) {}
         })
-        listView.setOnItemClickListener { _, _, position, _ ->
-            val stationName = adapter.getItem(position)?.stationName
-            val crs = adapter.getItem(position)?.crs
-            val searchAndCRSResult = Intent().putExtra("ResultCRS", crs)
-                    .putExtra("Result", stationName)
-            setResult(Activity.RESULT_OK, searchAndCRSResult)
-            finish()
-        }
     }
 
     override fun listStationsInListView(stationsData: List<Station>) {
-        stations.clear()
-        stations.addAll(stationsData)
+        filteredStations.clear()
+        filteredStations.addAll(stationsData)
         adapter.notifyDataSetChanged()
     }
 
