@@ -8,6 +8,7 @@ class ViewController: UIViewController,  UITableViewDelegate, UITableViewDataSou
     @IBOutlet private var button: UIButton!
     @IBOutlet var tableView: UITableView!
     @IBOutlet var label: UILabel!
+    @IBOutlet var progressLoader: UIProgressView!
     
     var senderID: String = ""
     let cellReuseIdentifier = "JourneyCellType"
@@ -26,7 +27,9 @@ class ViewController: UIViewController,  UITableViewDelegate, UITableViewDataSou
     
     //TODO: Breaks if empty or if same station or if no routes between station
     @IBAction func onClickButton() {
+        tableView.isHidden = true
         label.isHidden = true
+        progressLoader.isHidden = false
         presenter.getAndDisplayJourneysData(view: self, arrivalStation: originStationCRS, departureStation: destStationCRS)
     }
     
@@ -52,12 +55,12 @@ class ViewController: UIViewController,  UITableViewDelegate, UITableViewDataSou
      }
     
     @objc(displayJourneysInRecyclerViewJourneysData:) func displayJourneysInRecyclerView(journeysData: [Journey]) {
+        progressLoader.isHidden = true
         if (journeysData.isEmpty) {
             label.isHidden = false
             tableView.isHidden = true
             return
         }
-
         journeys = journeysData
         tableView.isHidden = false
         tableView.reloadData()

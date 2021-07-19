@@ -25,7 +25,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="80" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="iea-vh-7Yt">
-                                <rect key="frame" x="0.0" y="309" width="414" height="587"/>
+                                <rect key="frame" x="0.0" y="360" width="414" height="565"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
@@ -131,11 +131,14 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4ap-Rl-ZYa">
-                                <rect key="frame" x="153" y="271" width="108" height="30"/>
+                                <rect key="frame" x="126" y="282" width="153" height="41"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.80784313725490198" green="0.054901960784313725" blue="0.1764705882352941" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <state key="normal" title="FIND TRAINS"/>
+                                <state key="normal" title="FIND JOURNEYS">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                         <integer key="value" value="5"/>
@@ -145,8 +148,12 @@
                                     <action selector="onClickButton" destination="BYZ-38-t0r" eventType="touchUpInside" id="uCE-3z-TFG"/>
                                 </connections>
                             </button>
+                            <progressView hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="8qG-HE-vNt">
+                                <rect key="frame" x="132" y="381" width="150" height="5"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </progressView>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Sorry, No Journeys Found" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EaU-73-dVC">
-                                <rect key="frame" x="109" y="309" width="197" height="21"/>
+                                <rect key="frame" x="109" y="352" width="197" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
@@ -161,6 +168,7 @@
                         <outlet property="destinationStationSelector" destination="eWS-P4-9he" id="Qnm-dz-Luj"/>
                         <outlet property="label" destination="EaU-73-dVC" id="s4B-X7-y4b"/>
                         <outlet property="originStationSelector" destination="wAt-Vm-bY9" id="G3K-tk-8sY"/>
+                        <outlet property="progressLoader" destination="8qG-HE-vNt" id="3kg-vM-inD"/>
                         <outlet property="tableView" destination="iea-vh-7Yt" id="8Uf-Nf-fpE"/>
                     </connections>
                 </viewController>
