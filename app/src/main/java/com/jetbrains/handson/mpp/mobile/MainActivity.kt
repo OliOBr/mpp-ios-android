@@ -11,12 +11,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class MainActivity : AppCompatActivity(), ApplicationContract.MainView {
+class MainActivity : AppCompatActivity(), MainContract.View {
 
     lateinit var departureStationText: EditText
     lateinit var arrivalStationText: EditText
 
-    lateinit var presenter: ApplicationPresenter
+    lateinit var presenter: MainPresenter
 
     var originStationCRS = ""
     var destStationCRS = ""
@@ -45,7 +45,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        presenter = ApplicationPresenter()
+        presenter = MainPresenter()
 
         rvTrains = findViewById(R.id.rvTrains)
         noJourneysFoundText = findViewById(R.id.noJourneysFoundText)

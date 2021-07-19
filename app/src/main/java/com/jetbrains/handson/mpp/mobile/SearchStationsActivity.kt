@@ -5,20 +5,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.ListView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.MaterialToolbar
 
 
-class SearchStationsActivity : AppCompatActivity(), ApplicationContract.SearchStationsView {
+class SearchStationsActivity : AppCompatActivity(), SearchStationsContract.View {
 
-    lateinit var presenter: ApplicationPresenter
+    lateinit var presenter: SearchStationsPresenter
 
     lateinit var topAppBar: MaterialToolbar
 
@@ -36,7 +32,7 @@ class SearchStationsActivity : AppCompatActivity(), ApplicationContract.SearchSt
             finish()
         }
 
-        presenter = ApplicationPresenter()
+        presenter = SearchStationsPresenter()
         presenter.getAndListStationsData(this)
 
         val listView = findViewById<ListView>(R.id.listView)

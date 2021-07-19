@@ -5,7 +5,7 @@ import kotlinx.serialization.json.JsonArray
 import kotlin.coroutines.CoroutineContext
 
 
-class ApplicationPresenter: ApplicationContract.Presenter() {
+class SearchStationsPresenter: SearchStationsContract.Presenter() {
 
     private val dispatchers = AppDispatchersImpl()
     private val job: Job = SupervisorJob()
@@ -14,14 +14,7 @@ class ApplicationPresenter: ApplicationContract.Presenter() {
 
     private val scope = CoroutineScope(coroutineContext)
 
-    override fun getAndDisplayJourneysData(view: ApplicationContract.MainView, originStationCRS: String, destStationCRS: String) {
-        scope.launch { // launch a new coroutine and continue
-            val journeysData: JsonArray = makeGetRequestForJourneysData(originStationCRS, destStationCRS)
-            view.displayJourneysInRecyclerView(journeysData.map{parseJSONElementToJourney(it)})
-        }
-    }
-
-    override fun getAndListStationsData(view: ApplicationContract.SearchStationsView) {
+    override fun getAndListStationsData(view: SearchStationsContract.View) {
         scope.launch { // launch a new coroutine and continue
             val stationsData: JsonArray = makeGetRequestForStationsData()
             view.listStationsInListView(stationsData.map{ parseJSONElementToStation(it) }
