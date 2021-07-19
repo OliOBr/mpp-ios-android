@@ -63,8 +63,7 @@ class SearchStationsActivity : AppCompatActivity(), ApplicationContract.SearchSt
                 count: Int
             ) {
                 filteredStations.clear()
-                filteredStations = stations.toList().filter{it.stationName.contains(s)}.toMutableList()
-                adapter.setItems(filteredStations)
+                filteredStations.addAll(stations.toList().filter{ station -> station.stationName.toLowerCase().contains(s,ignoreCase = true)})
                 adapter.notifyDataSetChanged()
             }
             override fun afterTextChanged(s: Editable) {}
@@ -74,6 +73,7 @@ class SearchStationsActivity : AppCompatActivity(), ApplicationContract.SearchSt
     override fun listStationsInListView(stationsData: List<Station>) {
         filteredStations.clear()
         filteredStations.addAll(stationsData)
+        stations = stationsData.toMutableList()
         adapter.notifyDataSetChanged()
     }
 
