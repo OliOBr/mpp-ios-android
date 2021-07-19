@@ -1,12 +1,12 @@
 package com.jetbrains.handson.mpp.mobile
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.MaterialToolbar
 
@@ -42,7 +42,13 @@ class SearchStationsActivity : AppCompatActivity(), ApplicationContract.SearchSt
 
         adapter = StationsAdapter(filteredStations,this)
         listView.adapter = adapter
-
+        listView.layoutManager = LinearLayoutManager(this)
+        listView.addItemDecoration(
+            DividerItemDecoration(
+                listView.context,
+                DividerItemDecoration.VERTICAL
+            )
+        )
         searchText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(
                 s: CharSequence,
