@@ -58,8 +58,9 @@ class ViewController: UIViewController,  UITableViewDelegate, UITableViewDataSou
                     cell.statusText.text = "Delayed"
                     cell.ticketPrice.text  = self.journeys[indexPath.row].ticketPriceInPounds
                 } else if (self.journeys[indexPath.row].status == "fully_reserved") {
-                    cell.statusText.text  = "Fully booked"
+                    cell.statusText.text  = "Full"
                 }
+        cell.nextDay.isHidden = !self.journeys[indexPath.row].nextDay
         return cell
      }
     

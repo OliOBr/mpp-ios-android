@@ -8,4 +8,5 @@ class JourneyViewCell: UITableViewCell {
     @IBOutlet var originStationText: UILabel!
     @IBOutlet var statusText: UILabel!
     @IBOutlet var ticketPrice: UILabel!
+    @IBOutlet var nextDay: UILabel!
 }

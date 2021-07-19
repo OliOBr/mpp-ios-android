@@ -75,6 +75,7 @@ fun parseJSONElementToJourney(json: JsonElement): Journey {
         .toString())!!.value
     val arrivalTime: String = Regex("(?<=T)(.{5})").find(json.jsonObject["arrivalTime"]
             .toString())!!.value
+    val nextDay: Boolean = (json.jsonObject["arrivalTime"].toString()[9]-json.jsonObject["departureTime"].toString()[9]) == 1
     val status: String = json.jsonObject["status"]
             .toString().replace(Regex("^\"|\"$"), "")
 
@@ -91,7 +92,7 @@ fun parseJSONElementToJourney(json: JsonElement): Journey {
         "£$offPeakSinglePriceInPounds.$offPeakSinglePenniesLeft"
     }
     return Journey(originStation, destStation, departureTime, arrivalTime,
-            status, offPeakSinglePriceFormatted)
+            status, offPeakSinglePriceFormatted, nextDay)
 }
 
 fun parseJSONElementToStation(json: JsonElement): Station {
