@@ -1,25 +1,35 @@
 import UIKit
 import SharedCode
 
-class SearchController: UIViewController,UITableViewDelegate,UITableViewDataSource{
+class SearchController: UIViewController,UITableViewDelegate,UITableViewDataSource, ApplicationContractSearchStationsView {
+    
     @IBOutlet var searchBar: UISearchBar!
     @IBOutlet var tableView: UITableView!
     var searching = false
     var senderID: String = ""
-    var stationSelected : String?
-    var searchedStations: [String] = []
-    var stations: [String] = ["Newton Abbot","Waterloo","Durham","Cambridge","Paddington"]
+    
+    var stationSelected : Station?
+    var searchedStations: [Station] = []
+    var stations: [Station] = []
+    
     var searchDelegate:SearchDelegate?
+    
+    private let presenter: ApplicationContractPresenter = ApplicationPresenter()
+    
+    func listStationsInListView(stationData: [Station]) {
+        stations = stationData
+        tableView.reloadData()
+    }
+    
     override func viewDidLoad() {
             super.viewDidLoad()
             tableView.delegate = self
             tableView.dataSource = self
-            // Uncomment the following line to preserve selection between presentations
-            // self.clearsSelectionOnViewWillAppear = false
-
-            // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-            // self.navigationItem.rightBarButtonItem = self.editButtonItem
-        }
+            
+        presenter.getAndListStationsData(view: self)
+    }
+    
+    
     // number of rows in table view
      func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if(searching){
@@ -36,30 +46,30 @@ class SearchController: UIViewController,UITableViewDelegate,UITableViewDataSour
          // create a new cell if needed or reuse an old one
         let cell = tableView.dequeueReusableCell(withIdentifier: "listItem", for: indexPath )
         if(searching){
-            cell.textLabel!.text = searchedStations[indexPath.row]
+            cell.textLabel!.text = searchedStations[indexPath.row].stationName
         }
         else{
-            cell.textLabel!.text = stations[indexPath.row]
+            cell.textLabel!.text = stations[indexPath.row].stationName
         }
          // set the text from the data model
         return cell
      }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if(searching){
-        stationSelected = searchedStations[indexPath.row]
-        }else{
+        if (searching) {
+            stationSelected = searchedStations[indexPath.row]
+        } else {
             stationSelected = stations[indexPath.row]
         }
         performSegue(withIdentifier: "returnSearch", sender: self)
-        }
+    }
     
     
 }
 
 extension SearchController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        searchedStations = stations.filter { $0.lowercased().prefix(searchText.count) == searchText.lowercased() }
+        searchedStations = stations.filter { $0.stationName.lowercased().prefix(searchText.count) == searchText.lowercased() }
                 searching = true
                 tableView.reloadData()
     }

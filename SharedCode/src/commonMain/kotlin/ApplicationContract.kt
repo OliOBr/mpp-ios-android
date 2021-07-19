@@ -8,11 +8,11 @@ interface ApplicationContract {
     }
 
     interface SearchStationsView {
-        fun listStationsInListView(view: List<Station>)
+        fun listStationsInListView(stationData: List<Station>)
     }
 
     abstract class Presenter: CoroutineScope {
         abstract fun getAndDisplayJourneysData(view: ApplicationContract.MainView, arrivalStation: String, departureStation: String)
-        abstract fun getAndListStationsData(view: ApplicationContract.SearchStationsView, url: String)
+        abstract fun getAndListStationsData(view: ApplicationContract.SearchStationsView)
     }
 }

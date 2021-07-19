@@ -1,7 +1,7 @@
 import UIKit
 import SharedCode
 
-class ViewController: UIViewController,  UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate {
+class ViewController: UIViewController,  UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate, ApplicationContractMainView {
 
     @IBOutlet var originStationSelector: UITextField!
     @IBOutlet var destinationStationSelector: UITextField!
@@ -10,22 +10,21 @@ class ViewController: UIViewController,  UITableViewDelegate, UITableViewDataSou
     var senderID: String = ""
     let cellReuseIdentifier = "JourneyCellType"
     var journeys: [Journey] = []
+    
+    var originStationCRS = ""
+    var destStationCRS = ""
 
     private let presenter: ApplicationContractPresenter = ApplicationPresenter()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        presenter.onViewTaken(view: self)
         tableView.delegate = self
         tableView.dataSource = self
     }
     
     //TODO: Breaks if empty or if same station or if no routes between station
     @IBAction func onClickButton() {
-        let destinationStation = destinationStationSelector.text!
-        let originStation = originStationSelector.text!
-        let url = presenter.getAPIURLWithSelectedStationsPresenter(arrivalStation: destinationStation,departureStation: originStation)
-        presenter.getAndDisplayJourneysData(view: self, url: url)
+        presenter.getAndDisplayJourneysData(view: self, arrivalStation: originStationCRS, departureStation: destStationCRS)
     }
     
     // number of rows in table view
@@ -49,7 +48,7 @@ class ViewController: UIViewController,  UITableViewDelegate, UITableViewDataSou
         return cell
      }
     
-    func displayJourneysInRecyclerView(journeysData: [Journey]) {
+    @objc(displayJourneysInRecyclerViewJourneysData:) func displayJourneysInRecyclerView(journeysData: [Journey]) {
         journeys = journeysData
         tableView.reloadData()
     }
@@ -72,13 +71,16 @@ class ViewController: UIViewController,  UITableViewDelegate, UITableViewDataSou
         senderID = "toText"
         performSegue(withIdentifier: "SegueToSearch", sender: self)
     }
+    
     // segue ViewControllerB -> ViewController
     @IBAction func unwind( _ sender: UIStoryboardSegue) {
         if let sourceViewController = sender.source as? SearchController {
-            if(senderID == "fromText") {
-            originStationSelector.text = sourceViewController.stationSelected
+            if (senderID == "fromText") {
+                originStationSelector.text = sourceViewController.stationSelected!.stationName
+                originStationCRS = sourceViewController.stationSelected!.crs
             } else {
-                destinationStationSelector.text = sourceViewController.stationSelected
+                destinationStationSelector.text = sourceViewController.stationSelected!.stationName
+                destStationCRS = sourceViewController.stationSelected!.crs
             }
         }
     }

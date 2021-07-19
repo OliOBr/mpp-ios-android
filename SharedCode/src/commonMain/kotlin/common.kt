@@ -1,8 +1,10 @@
 package com.jetbrains.handson.mpp.mobile
 
+import com.soywiz.klock.DateFormat
+import com.soywiz.klock.DateTime
 import io.ktor.client.*
-import io.ktor.client.features.json.JsonFeature
-import io.ktor.client.features.json.serializer.KotlinxSerializer
+import io.ktor.client.features.json.*
+import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.*
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
@@ -16,17 +18,24 @@ val client = HttpClient(){
     }
 }
 
-fun getAPIURLWithSelectedStations(originStationCRS: String, destStationCRS: String): String {
-    return "https://mobile-api-softwire2.lner.co.uk/v1/fares?originStation=$originStationCRS" +
-            "&destinationStation=$destStationCRS&noChanges=false&numberOfAdults=2" +
-            "&numberOfChildren=0&journeyType=single" +
-            "&outboundDateTime=2021-07-24T14%3A30%3A00.000%2B01%3A00&outboundIsArriveBy=false"
-}
-
-suspend fun makeGetRequestForJourneysData(url: String): JsonArray {
+// TODO: Date formatting isn't working with timezones
+suspend fun makeGetRequestForJourneysData(originStationCRS: String, destStationCRS: String): JsonArray {
     println("calling makeGetRequestForJourneysData()")
+//    val dateFormat = DateFormat("yyyy-MM-ddTHH:mm:ss.000+01:00")
+//    val currentTime: String = DateTime.now().format(dateFormat)
+//    "2021-07-24T15:15:00.000+01:00"
     try {
-        val response: JsonObject = client.get(url)
+        val response: JsonObject = client.get("https://mobile-api-softwire2.lner.co.uk/v1/fares?") {
+            parameter("originStation", originStationCRS)
+            parameter("destinationStation", destStationCRS)
+            parameter("noChanges", "false")
+            parameter("numberOfAdults", 1)
+            parameter("numberOfChildren", 0)
+            parameter("journeyType", "single")
+//            parameter("outboundDateTime", currentTime)
+            parameter("outboundDateTime", "2021-07-24T15:15:00.000+01:00")
+            parameter("outboundIsArriveBy", "false")
+        }
         println(response)
         val trainsList: JsonElement? = response["outboundJourneys"]
         return trainsList!!.jsonArray
@@ -37,10 +46,10 @@ suspend fun makeGetRequestForJourneysData(url: String): JsonArray {
     return JsonArray(listOf())
 }
 
-suspend fun makeGetRequestForStationsData(url: String): JsonArray {
+suspend fun makeGetRequestForStationsData(): JsonArray {
     println("calling makeGetRequestForStationsData()")
     try {
-        val response: JsonObject = client.get(url)
+        val response: JsonObject = client.get("https://mobile-api-softwire2.lner.co.uk/v1/stations")
         val stations: JsonElement? = response["stations"]
         println(response)
         return stations!!.jsonArray
@@ -70,14 +79,12 @@ fun parseJSONElementToJourney(json: JsonElement): Journey {
 }
 
 fun parseJSONElementToStation(json: JsonElement): Station {
-
     val stationName: String = json.jsonObject["name"]!!
             .toString().replace(Regex("^\"|\"$"), "")
     val crs: String = json.jsonObject["crs"]!!
             .toString().replace(Regex("^\"|\"$"), "")
     val nlc: String = json.jsonObject["nlc"]!!
             .toString().replace(Regex("^\"|\"$"), "")
-
     return Station(stationName, nlc, crs)
 }
 
