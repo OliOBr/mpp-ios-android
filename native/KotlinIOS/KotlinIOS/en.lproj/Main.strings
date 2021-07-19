@@ -1,0 +1,30 @@
+
+/* Class = "UILabel"; text = "Status:"; ObjectID = "36y-mC-e7X"; */
+"36y-mC-e7X.text" = "Status:";
+
+/* Class = "UILabel"; text = "23:21"; ObjectID = "3Xs-y4-M8l"; */
+"3Xs-y4-M8l.text" = "23:21";
+
+/* Class = "UIButton"; normalTitle = "FIND TRAINS"; ObjectID = "4ap-Rl-ZYa"; */
+"4ap-Rl-ZYa.normalTitle" = "FIND TRAINS";
+
+/* Class = "UILabel"; text = "21:03"; ObjectID = "75f-JE-ugm"; */
+"75f-JE-ugm.text" = "21:03";
+
+/* Class = "UILabel"; text = "To:"; ObjectID = "7c8-ek-YEV"; */
+"7c8-ek-YEV.text" = "To:";
+
+/* Class = "UILabel"; text = "ArrivalStation"; ObjectID = "7da-if-gJK"; */
+"7da-if-gJK.text" = "ArrivalStation";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "EaU-73-dVC"; */
+"EaU-73-dVC.text" = "Label";
+
+/* Class = "UILabel"; text = "From:"; ObjectID = "H0h-hL-L59"; */
+"H0h-hL-L59.text" = "From:";
+
+/* Class = "UILabel"; text = "normal"; ObjectID = "QxR-yt-F57"; */
+"QxR-yt-F57.text" = "normal";
+
+/* Class = "UILabel"; text = "DepartureStation"; ObjectID = "qrg-4X-L8i"; */
+"qrg-4X-L8i.text" = "DepartureStation";

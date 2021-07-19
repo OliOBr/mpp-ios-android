@@ -22,11 +22,9 @@ class SearchStationsActivity : AppCompatActivity(), ApplicationContract.SearchSt
 
     lateinit var topAppBar: MaterialToolbar
 
-    private val urlForStationsData: String = "https://mobile-api-softwire2.lner.co.uk/v1/stations"
     private var stations: MutableList<Station> = mutableListOf()
 
     lateinit var adapter: ArrayAdapter<Station>
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +37,7 @@ class SearchStationsActivity : AppCompatActivity(), ApplicationContract.SearchSt
         }
 
         presenter = ApplicationPresenter()
-        presenter.getAndListStationsData(this, urlForStationsData)
+        presenter.getAndListStationsData(this)
 
         val listView = findViewById<ListView>(R.id.listView)
         val searchText = findViewById<EditText>(R.id.searchText)
