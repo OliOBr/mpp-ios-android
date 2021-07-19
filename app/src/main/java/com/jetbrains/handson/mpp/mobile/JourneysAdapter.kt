@@ -35,8 +35,17 @@ class JourneysAdapter(private val journeys: List<Journey>): RecyclerView.Adapter
         holder.departureStation.text = journey.originStation
         holder.departureTime.text = journey.departureTime
         holder.arrivalTime.text = journey.arrivalTime
-        holder.status.text = journey.status
-        holder.ticketPrice.text = journey.ticketPriceInPounds
+        if (journey.status == "normal") {
+            holder.status.text = "On time"
+            holder.ticketPrice.text = journey.ticketPriceInPounds
+        } else if (journey.status == "cancelled") {
+            holder.status.text = "Cancelled"
+        } else if (journey.status == "delayed") {
+            holder.status.text = "Delayed"
+            holder.ticketPrice.text = journey.ticketPriceInPounds
+        } else if (journey.status == "fully_reserved") {
+            holder.status.text = "Fully booked"
+        }
     }
 
 }
