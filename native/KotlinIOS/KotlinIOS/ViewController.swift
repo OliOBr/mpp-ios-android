@@ -7,6 +7,8 @@ class ViewController: UIViewController,  UITableViewDelegate, UITableViewDataSou
     @IBOutlet var destinationStationSelector: UITextField!
     @IBOutlet private var button: UIButton!
     @IBOutlet var tableView: UITableView!
+    @IBOutlet var label: UILabel!
+    
     var senderID: String = ""
     let cellReuseIdentifier = "JourneyCellType"
     var journeys: [Journey] = []
@@ -24,6 +26,7 @@ class ViewController: UIViewController,  UITableViewDelegate, UITableViewDataSou
     
     //TODO: Breaks if empty or if same station or if no routes between station
     @IBAction func onClickButton() {
+        label.isHidden = true
         presenter.getAndDisplayJourneysData(view: self, arrivalStation: originStationCRS, departureStation: destStationCRS)
     }
     
@@ -49,7 +52,14 @@ class ViewController: UIViewController,  UITableViewDelegate, UITableViewDataSou
      }
     
     @objc(displayJourneysInRecyclerViewJourneysData:) func displayJourneysInRecyclerView(journeysData: [Journey]) {
+        if (journeysData.isEmpty) {
+            label.isHidden = false
+            tableView.isHidden = true
+            return
+        }
+
         journeys = journeysData
+        tableView.isHidden = false
         tableView.reloadData()
     }
 

@@ -21,6 +21,9 @@ class MainActivity : AppCompatActivity(), ApplicationContract.MainView {
     var originStationCRS = ""
     var destStationCRS = ""
 
+    private lateinit var rvTrains: RecyclerView
+    private lateinit var noJourneysFoundText: TextView
+
     private val departureStationStart = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
     { result: ActivityResult ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -43,6 +46,9 @@ override fun onCreate(savedInstanceState: Bundle?) {
 
         presenter = ApplicationPresenter()
 
+        rvTrains = findViewById(R.id.rvTrains)
+        noJourneysFoundText = findViewById(R.id.noJourneysFoundText)
+
         departureStationText = findViewById(R.id.departureStationText)
         arrivalStationText = findViewById(R.id.arrivalStationText)
         departureStationText.setOnClickListener{
@@ -53,17 +59,16 @@ override fun onCreate(savedInstanceState: Bundle?) {
         }
 
         val button: Button = findViewById(R.id.button)
-        button.setOnClickListener{presenter.getAndDisplayJourneysData(this, originStationCRS, destStationCRS)}
+        button.setOnClickListener{noJourneysFoundText.visibility = View.GONE;presenter.getAndDisplayJourneysData(this, originStationCRS, destStationCRS)}
     }
 
     override fun displayJourneysInRecyclerView(journeysData: List<Journey>) {
-        val rvTrains: RecyclerView = findViewById(R.id.rvTrains)
         if (journeysData.isEmpty()) {
-            val noJourneysFoundText: TextView = findViewById(R.id.noJourneysFoundText)
             noJourneysFoundText.visibility = View.VISIBLE
             rvTrains.visibility = View.GONE
             return
         }
+        rvTrains.visibility = View.VISIBLE
         val journeysAdapter = JourneysAdapter(journeysData)
         rvTrains.adapter = journeysAdapter
         rvTrains.layoutManager = LinearLayoutManager(this)
