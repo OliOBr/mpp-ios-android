@@ -49,8 +49,17 @@ class ViewController: UIViewController,  UITableViewDelegate, UITableViewDataSou
         cell.departureTimeText.text = self.journeys[indexPath.row].departureTime
         cell.destinationStationText.text =  self.journeys[indexPath.row].destinationStation
         cell.originStationText.text = self.journeys[indexPath.row].originStation
-        cell.statusText.text = self.journeys[indexPath.row].status
-         cell.ticketPrice.text = self.journeys[indexPath.row].ticketPriceInPounds
+        if (self.journeys[indexPath.row].status == "normal") {
+                    cell.statusText.text  = "On time"
+                    cell.ticketPrice.text  = self.journeys[indexPath.row].ticketPriceInPounds
+                } else if (self.journeys[indexPath.row].status == "cancelled") {
+                    cell.statusText.text  = "Cancelled"
+                } else if (self.journeys[indexPath.row].status == "delayed") {
+                    cell.statusText.text = "Delayed"
+                    cell.ticketPrice.text  = self.journeys[indexPath.row].ticketPriceInPounds
+                } else if (self.journeys[indexPath.row].status == "fully_reserved") {
+                    cell.statusText.text  = "Fully booked"
+                }
         return cell
      }
     
