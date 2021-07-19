@@ -13,7 +13,7 @@ class JourneysAdapter(private val journeys: List<Journey>): RecyclerView.Adapter
         val departureTime: TextView = itemView.findViewById<TextView>(R.id.departureTime)
         val arrivalTime: TextView = itemView.findViewById<TextView>(R.id.arrivalTime)
         val status: TextView = itemView.findViewById<TextView>(R.id.status)
-
+        val ticketPrice: TextView = itemView.findViewById(R.id.ticketPrice)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -36,6 +36,7 @@ class JourneysAdapter(private val journeys: List<Journey>): RecyclerView.Adapter
         holder.departureTime.text = journey.departureTime
         holder.arrivalTime.text = journey.arrivalTime
         holder.status.text = journey.status
+        holder.ticketPrice.text = journey.ticketPriceInPounds
     }
 
 }

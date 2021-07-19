@@ -6,6 +6,7 @@ import io.ktor.client.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.*
+import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
@@ -61,6 +62,7 @@ suspend fun makeGetRequestForStationsData(): JsonArray {
 }
 
 fun parseJSONElementToJourney(json: JsonElement): Journey {
+
     val originStation: String = json.jsonObject["originStation"]!!.jsonObject["displayName"]
             .toString().replace(Regex("^\"|\"$"), "")
     val destStation: String = json.jsonObject["destinationStation"]!!.jsonObject["displayName"]
@@ -72,10 +74,14 @@ fun parseJSONElementToJourney(json: JsonElement): Journey {
     val status: String = json.jsonObject["status"]
             .toString().replace(Regex("^\"|\"$"), "")
 
-    // TODO: Add ticket prices to Table
-    val tickets: String = json.jsonObject["tickets"].toString()
+    val tickets: JsonElement? = json.jsonObject["tickets"]
+    val ticketsArray: JsonArray? = tickets!!.jsonArray
+    val offPeakSinglePriceInPounds: Int = ticketsArray?.get(0)?.jsonObject?.get("priceInPennies")
+            .toString().toInt() / 100
+    val offPeakSinglePriceFormatted = "£$offPeakSinglePriceInPounds"
 
-    return Journey(originStation, destStation, departureTime, arrivalTime, status)
+    return Journey(originStation, destStation, departureTime, arrivalTime,
+            status, offPeakSinglePriceFormatted)
 }
 
 fun parseJSONElementToStation(json: JsonElement): Station {
