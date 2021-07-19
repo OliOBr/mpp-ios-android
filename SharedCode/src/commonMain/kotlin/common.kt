@@ -2,6 +2,8 @@ package com.jetbrains.handson.mpp.mobile
 
 import com.soywiz.klock.DateFormat
 import com.soywiz.klock.DateTime
+import com.soywiz.klock.TimeSpan
+import com.soywiz.klock.minutes
 import io.ktor.client.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
@@ -22,9 +24,11 @@ val client = HttpClient(){
 // TODO: Date formatting isn't working with timezones
 suspend fun makeGetRequestForJourneysData(originStationCRS: String, destStationCRS: String): JsonArray {
     println("calling makeGetRequestForJourneysData()")
-//    val dateFormat = DateFormat("yyyy-MM-ddTHH:mm:ss.000+01:00")
-//    val currentTime: String = DateTime.now().format(dateFormat)
-//    "2021-07-24T15:15:00.000+01:00"
+    val dateFormat = DateFormat("yyyy-MM-ddTHH:mm:ss")
+    val currentDateTime = DateTime.now() + TimeSpan(60000.0)
+    var currentTime: String = currentDateTime.format(dateFormat)
+    val suffix = ".000+00:00"
+    currentTime += suffix
     try {
         val response: JsonObject = client.get("https://mobile-api-softwire2.lner.co.uk/v1/fares?") {
             parameter("originStation", originStationCRS)
@@ -33,8 +37,8 @@ suspend fun makeGetRequestForJourneysData(originStationCRS: String, destStationC
             parameter("numberOfAdults", 1)
             parameter("numberOfChildren", 0)
             parameter("journeyType", "single")
-//            parameter("outboundDateTime", currentTime)
-            parameter("outboundDateTime", "2021-07-24T15:15:00.000+01:00")
+            parameter("outboundDateTime", currentTime)
+//            parameter("outboundDateTime", "2021-07-24T15:15:15.000+01:00")
             parameter("outboundIsArriveBy", "false")
         }
         println(response)
