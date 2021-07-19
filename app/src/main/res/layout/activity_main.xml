@@ -13,7 +13,6 @@
         android:layout_height="wrap_content">
 
         <ImageButton
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -21,8 +20,8 @@
             android:src="@drawable/ic_lnerlogo"
             android:tint="#CE0E2D"
             app:layout_constraintTop_toTopOf="parent"
-            android:contentDescription="L N E R"
-            />
+            android:contentDescription="L N E R" />
+
     </RelativeLayout>
 
     <TextView
@@ -67,10 +66,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="Find Trains"
+            android:text="Find Journeys"
         />
 
     </RelativeLayout>
+
+    <android.widget.ProgressBar
+        android:id="@+id/progress_loader"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonLayout" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvTrains"

@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity(), ApplicationContract.MainView {
 
     private lateinit var rvTrains: RecyclerView
     private lateinit var noJourneysFoundText: TextView
+    private lateinit var progressLoader: ProgressBar
 
     private val departureStationStart = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
     { result: ActivityResult ->
@@ -48,6 +49,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
 
         rvTrains = findViewById(R.id.rvTrains)
         noJourneysFoundText = findViewById(R.id.noJourneysFoundText)
+        progressLoader = findViewById(R.id.progress_loader)
 
         departureStationText = findViewById(R.id.departureStationText)
         arrivalStationText = findViewById(R.id.arrivalStationText)
@@ -59,13 +61,18 @@ override fun onCreate(savedInstanceState: Bundle?) {
         }
 
         val button: Button = findViewById(R.id.button)
-        button.setOnClickListener{noJourneysFoundText.visibility = View.GONE;presenter.getAndDisplayJourneysData(this, originStationCRS, destStationCRS)}
+        button.setOnClickListener{
+            noJourneysFoundText.visibility = View.GONE;
+            rvTrains.visibility = View.GONE;
+            progressLoader.visibility = View.VISIBLE;
+            presenter.getAndDisplayJourneysData(this, originStationCRS, destStationCRS)
+        }
     }
 
     override fun displayJourneysInRecyclerView(journeysData: List<Journey>) {
+        progressLoader.visibility = View.GONE
         if (journeysData.isEmpty()) {
             noJourneysFoundText.visibility = View.VISIBLE
-            rvTrains.visibility = View.GONE
             return
         }
         rvTrains.visibility = View.VISIBLE
