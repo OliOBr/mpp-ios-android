@@ -1,7 +1,7 @@
 import UIKit
 import SharedCode
 
-class SearchController: UIViewController,UITableViewDelegate,UITableViewDataSource, ApplicationContractSearchStationsView {
+class SearchController: UIViewController,UITableViewDelegate,UITableViewDataSource, SearchStationsContractView {
     
     @IBOutlet var searchBar: UISearchBar!
     @IBOutlet var tableView: UITableView!
@@ -14,7 +14,7 @@ class SearchController: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     var searchDelegate:SearchDelegate?
     
-    private let presenter: ApplicationContractPresenter = ApplicationPresenter()
+    private let presenter: SearchStationsContractPresenter = SearchStationsPresenter()
     
     func listStationsInListView(stationData: [Station]) {
         stations = stationData
@@ -22,9 +22,9 @@ class SearchController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     override func viewDidLoad() {
-            super.viewDidLoad()
-            tableView.delegate = self
-            tableView.dataSource = self
+        super.viewDidLoad()
+        tableView.delegate = self
+        tableView.dataSource = self
             
         presenter.getAndListStationsData(view: self)
     }
@@ -32,28 +32,26 @@ class SearchController: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     // number of rows in table view
      func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if(searching){
+        if (searching) {
             return searchedStations.count
-        }
-        else{
-         return stations.count
+        } else {
+            return stations.count
         }
      }
      
-     // create a cell for each table view row
-     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-         
-         // create a new cell if needed or reuse an old one
+    // create a cell for each table view row
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
+        // create a new cell if needed or reuse an old one
         let cell = tableView.dequeueReusableCell(withIdentifier: "listItem", for: indexPath )
-        if(searching){
+        if (searching) {
             cell.textLabel!.text = searchedStations[indexPath.row].stationName
-        }
-        else{
+        } else {
             cell.textLabel!.text = stations[indexPath.row].stationName
         }
-         // set the text from the data model
+        // set the text from the data model
         return cell
-     }
+    }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if (searching) {

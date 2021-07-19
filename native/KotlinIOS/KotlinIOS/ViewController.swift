@@ -1,7 +1,7 @@
 import UIKit
 import SharedCode
 
-class ViewController: UIViewController,  UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate, ApplicationContractMainView {
+class ViewController: UIViewController,  UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate, MainContractView {
 
     @IBOutlet var originStationSelector: UITextField!
     @IBOutlet var destinationStationSelector: UITextField!
@@ -17,7 +17,7 @@ class ViewController: UIViewController,  UITableViewDelegate, UITableViewDataSou
     var originStationCRS = ""
     var destStationCRS = ""
 
-    private let presenter: ApplicationContractPresenter = ApplicationPresenter()
+    private let presenter: MainContractPresenter = MainPresenter()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +30,7 @@ class ViewController: UIViewController,  UITableViewDelegate, UITableViewDataSou
         tableView.isHidden = true
         label.isHidden = true
         progressLoader.isHidden = false
-        presenter.getAndDisplayJourneysData(view: self, arrivalStation: originStationCRS, departureStation: destStationCRS)
+        presenter.getAndDisplayJourneysData(view: self, originStationCRS: originStationCRS, destStationCRS: destStationCRS)
     }
     
     // number of rows in table view
@@ -51,6 +51,7 @@ class ViewController: UIViewController,  UITableViewDelegate, UITableViewDataSou
         cell.destinationStationText.text =  self.journeys[indexPath.row].destinationStation
         cell.originStationText.text = self.journeys[indexPath.row].originStation
         cell.statusText.text = self.journeys[indexPath.row].status
+         cell.ticketPrice.text = self.journeys[indexPath.row].ticketPriceInPounds
         return cell
      }
     

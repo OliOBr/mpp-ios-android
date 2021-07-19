@@ -7,4 +7,5 @@ class JourneyViewCell: UITableViewCell {
     @IBOutlet var destinationStationText: UILabel!
     @IBOutlet var originStationText: UILabel!
     @IBOutlet var statusText: UILabel!
+    @IBOutlet var ticketPrice: UILabel!
 }

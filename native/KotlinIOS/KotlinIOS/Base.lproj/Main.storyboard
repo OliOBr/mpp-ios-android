@@ -83,6 +83,13 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="TicketPrice" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VhR-jE-fEo">
+                                                    <rect key="frame" x="164" y="59" width="85" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
@@ -91,6 +98,7 @@
                                             <outlet property="destinationStationText" destination="7da-if-gJK" id="b3b-PM-YbD"/>
                                             <outlet property="originStationText" destination="qrg-4X-L8i" id="8GR-xQ-Gai"/>
                                             <outlet property="statusText" destination="QxR-yt-F57" id="NoP-ko-wR7"/>
+                                            <outlet property="ticketPrice" destination="VhR-jE-fEo" id="HJd-TF-veo"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
