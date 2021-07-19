@@ -25,7 +25,6 @@ class ViewController: UIViewController,  UITableViewDelegate, UITableViewDataSou
         tableView.dataSource = self
     }
     
-    //TODO: Breaks if empty or if same station or if no routes between station
     @IBAction func onClickButton() {
         tableView.isHidden = true
         label.isHidden = true
