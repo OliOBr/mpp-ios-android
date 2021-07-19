@@ -1,14 +1,14 @@
 package com.jetbrains.handson.mpp.mobile
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.widget.ArrayAdapter
+
 import android.widget.EditText
-import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.MaterialToolbar
 
 
@@ -19,8 +19,9 @@ class SearchStationsActivity : AppCompatActivity(), SearchStationsContract.View 
     lateinit var topAppBar: MaterialToolbar
 
     private var stations: MutableList<Station> = mutableListOf()
+    private var filteredStations: MutableList<Station> = mutableListOf()
 
-    lateinit var adapter: ArrayAdapter<Station>
+    lateinit var adapter: StationsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,15 +33,24 @@ class SearchStationsActivity : AppCompatActivity(), SearchStationsContract.View 
             finish()
         }
 
+
         presenter = SearchStationsPresenter()
         presenter.getAndListStationsData(this)
 
-        val listView = findViewById<ListView>(R.id.listView)
+        filteredStations = stations
+        val listView = findViewById<RecyclerView>(R.id.listView)
+
         val searchText = findViewById<EditText>(R.id.searchText)
 
-        adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, stations)
+        adapter = StationsAdapter(filteredStations,this)
         listView.adapter = adapter
-
+        listView.layoutManager = LinearLayoutManager(this)
+        listView.addItemDecoration(
+            DividerItemDecoration(
+                listView.context,
+                DividerItemDecoration.VERTICAL
+            )
+        )
         searchText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(
                 s: CharSequence,
@@ -54,23 +64,18 @@ class SearchStationsActivity : AppCompatActivity(), SearchStationsContract.View 
                 before: Int,
                 count: Int
             ) {
-                adapter.filter.filter(s)
+                filteredStations.clear()
+                filteredStations.addAll(stations.toList().filter{ station -> station.stationName.toLowerCase().contains(s,ignoreCase = true)})
+                adapter.notifyDataSetChanged()
             }
             override fun afterTextChanged(s: Editable) {}
         })
-        listView.setOnItemClickListener { _, _, position, _ ->
-            val stationName = adapter.getItem(position)?.stationName
-            val crs = adapter.getItem(position)?.crs
-            val searchAndCRSResult = Intent().putExtra("ResultCRS", crs)
-                    .putExtra("Result", stationName)
-            setResult(Activity.RESULT_OK, searchAndCRSResult)
-            finish()
-        }
     }
 
     override fun listStationsInListView(stationsData: List<Station>) {
-        stations.clear()
-        stations.addAll(stationsData)
+        filteredStations.clear()
+        filteredStations.addAll(stationsData)
+        stations = stationsData.toMutableList()
         adapter.notifyDataSetChanged()
     }
 

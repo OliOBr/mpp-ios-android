@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class JourneysAdapter(private val journeys: List<Journey>): RecyclerView.Adapter<JourneysAdapter.ViewHolder>(){
+
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val departureStation: TextView = itemView.findViewById<TextView>(R.id.departureStation)
         val arrivalStation: TextView = itemView.findViewById<TextView>(R.id.arrivalStation)
