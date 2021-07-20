@@ -21,6 +21,10 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     var originStationCRS = ""
     var destStationCRS = ""
 
+    var numberAdults = "1"
+    var numberChildren = "0"
+    var noChanges = "false"
+
     private lateinit var rvTrains: RecyclerView
     private lateinit var noJourneysFoundText: TextView
     private lateinit var progressLoader: ProgressBar
@@ -65,7 +69,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
             noJourneysFoundText.visibility = View.GONE;
             rvTrains.visibility = View.GONE;
             progressLoader.visibility = View.VISIBLE;
-            presenter.getAndDisplayJourneysData(this, originStationCRS, destStationCRS)
+            presenter.getAndDisplayJourneysData(this, originStationCRS, destStationCRS, numberAdults, numberChildren, noChanges)
         }
     }
 

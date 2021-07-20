@@ -8,6 +8,8 @@ interface MainContract {
     }
 
     abstract class Presenter: CoroutineScope {
-        abstract fun getAndDisplayJourneysData(view: MainContract.View, originStationCRS: String, destStationCRS: String)
+        abstract fun getAndDisplayJourneysData(view: MainContract.View, originStationCRS: String,
+                                               destStationCRS: String, numberAdults: String,
+                                               numberChildren: String, noChanges: String)
     }
 }

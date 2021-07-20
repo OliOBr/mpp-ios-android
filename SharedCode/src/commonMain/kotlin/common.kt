@@ -21,8 +21,9 @@ val client = HttpClient(){
     }
 }
 
-// TODO: Date formatting isn't working with timezones
-suspend fun makeGetRequestForJourneysData(originStationCRS: String, destStationCRS: String): JsonArray {
+suspend fun makeGetRequestForJourneysData(originStationCRS: String, destStationCRS: String,
+                                          numberAdults: String, numberChildren: String,
+                                          noChanges: String): JsonArray {
     println("calling makeGetRequestForJourneysData()")
     val dateFormat = DateFormat("yyyy-MM-ddTHH:mm:ss")
     val currentDateTime = DateTime.now() + TimeSpan(60000.0)
@@ -33,12 +34,11 @@ suspend fun makeGetRequestForJourneysData(originStationCRS: String, destStationC
         val response: JsonObject = client.get("https://mobile-api-softwire2.lner.co.uk/v1/fares?") {
             parameter("originStation", originStationCRS)
             parameter("destinationStation", destStationCRS)
-            parameter("noChanges", "false")
-            parameter("numberOfAdults", 1)
-            parameter("numberOfChildren", 0)
+            parameter("noChanges", noChanges)
+            parameter("numberOfAdults", numberAdults)
+            parameter("numberOfChildren", numberChildren)
             parameter("journeyType", "single")
             parameter("outboundDateTime", currentTime)
-//            parameter("outboundDateTime", "2021-07-24T15:15:15.000+01:00")
             parameter("outboundIsArriveBy", "false")
         }
         println(response)
