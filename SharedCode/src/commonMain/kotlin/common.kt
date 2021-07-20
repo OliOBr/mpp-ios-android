@@ -3,15 +3,18 @@ package com.jetbrains.handson.mpp.mobile
 import com.soywiz.klock.DateFormat
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.TimeSpan
-import com.soywiz.klock.minutes
-import io.ktor.client.*
-import io.ktor.client.features.json.*
-import io.ktor.client.features.json.serializer.*
-import io.ktor.client.request.*
-import kotlinx.serialization.json.Json
+import io.ktor.client.HttpClient
+import io.ktor.client.features.json.JsonFeature
+import io.ktor.client.features.json.serializer.KotlinxSerializer
+import io.ktor.client.request.get
+import io.ktor.client.request.parameter
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
+import kotlin.math.PI
+import kotlin.math.acos
+import kotlin.math.cos
+import kotlin.math.sin
 
 expect fun platformName(): String
 
@@ -102,8 +105,12 @@ fun parseJSONElementToStation(json: JsonElement): Station {
             .toString().replace(Regex("^\"|\"$"), "")
     val nlc: String = json.jsonObject["nlc"]!!
             .toString().replace(Regex("^\"|\"$"), "")
-    return Station(stationName, nlc, crs)
+    val longitude: Double? = json.jsonObject["longitude"].toString().replace(Regex("^\"|\"$"), "").toDoubleOrNull()
+    val latitude: Double? = json.jsonObject["latitude"].toString().replace(Regex("^\"|\"$"), "").toDoubleOrNull()
+    return Station(stationName, nlc, crs, longitude, latitude)
 }
+
+
 
 
 

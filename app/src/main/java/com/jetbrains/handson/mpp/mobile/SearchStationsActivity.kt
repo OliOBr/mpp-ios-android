@@ -1,11 +1,17 @@
 package com.jetbrains.handson.mpp.mobile
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,10 +24,12 @@ class SearchStationsActivity : AppCompatActivity(), SearchStationsContract.View 
 
     lateinit var topAppBar: MaterialToolbar
 
-    private var stations: MutableList<Station> = mutableListOf()
+    private var stations: List<Station> = mutableListOf()
     private var filteredStations: MutableList<Station> = mutableListOf()
 
     lateinit var adapter: StationsAdapter
+    lateinit var locationManager: LocationManager
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +45,8 @@ class SearchStationsActivity : AppCompatActivity(), SearchStationsContract.View 
         presenter = SearchStationsPresenter()
         presenter.getAndListStationsData(this)
 
-        filteredStations = stations
+        locationManager = this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        filteredStations = stations.toMutableList()
         val listView = findViewById<RecyclerView>(R.id.listView)
 
         val searchText = findViewById<EditText>(R.id.searchText)
@@ -74,9 +83,56 @@ class SearchStationsActivity : AppCompatActivity(), SearchStationsContract.View 
 
     override fun listStationsInListView(stationsData: List<Station>) {
         filteredStations.clear()
-        filteredStations.addAll(stationsData)
-        stations = stationsData.toMutableList()
+        addDistancesToStations(stationsData)
+    }
+
+    fun continueListStationsInListView(stationsData: List<Station>) {
+        filteredStations.addAll(stationsData.sortedWith(compareBy<Station,Double?>(nullsLast()) { it.distanceFromLocation }))
+        stations = filteredStations.toList()
         adapter.notifyDataSetChanged()
     }
+    fun addDistancesToStations(stationsData: List<Station>) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return
+        }
+
+            locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, object :
+                LocationListener {
+                    override fun onLocationChanged(location: Location) {
+                        if (location != null) {
+                            for(station in stationsData) {
+                                val distanceInMiles = station.getDistanceFromLocation(
+                                    location.longitude,
+                                    location.latitude
+                                )
+                                if (distanceInMiles != null) {
+                                    val distanceInMilesRounded: Double? =
+                                        Math.round(distanceInMiles*10)/10.toDouble()
+                                    station.distanceFromLocation = distanceInMilesRounded
+                                }
+                            }
+                        }
+                        continueListStationsInListView(stationsData)
+                    }
+
+                    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
+
+                    }
+
+                    override fun onProviderEnabled(provider: String?) {
+                    }
+
+                    override fun onProviderDisabled(provider: String?) {
+                    }
+                }, null)
+            }
+
 
 }
