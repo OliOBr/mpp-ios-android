@@ -85,13 +85,21 @@ fun parseJSONElementToJourney(json: JsonElement): Journey {
     val tickets: JsonElement? = json.jsonObject["tickets"]
     val ticketsArray: JsonArray? = tickets!!.jsonArray
     var offPeakSinglePriceFormatted: String
-    offPeakSinglePriceFormatted = if(ticketsArray?.size == 0) {
+    offPeakSinglePriceFormatted = if(ticketsArray?.size == 0 || ticketsArray == null) {
         "No tickets available"
     } else{
-        val offPeakSinglePriceInPounds: Int = ticketsArray?.get(0)?.jsonObject?.get("priceInPennies")
-            .toString().toInt() / 100
-        val offPeakSinglePenniesLeft: String = (ticketsArray?.get(0)?.jsonObject?.get("priceInPennies")
-            .toString().toInt() %  100).toString().padStart(2,'0')
+        var cheapestTicketPrice: Int = ticketsArray?.get(0)?.jsonObject?.get("priceInPennies")
+            .toString().toInt()
+        for (ticket in ticketsArray) {
+            if(cheapestTicketPrice >= ticket?.jsonObject?.get("priceInPennies")
+                    .toString().toInt()){
+                cheapestTicketPrice = ticket?.jsonObject?.get("priceInPennies")
+                    .toString().toInt()
+            }
+        }
+
+        val offPeakSinglePriceInPounds: Int = cheapestTicketPrice / 100
+        val offPeakSinglePenniesLeft: String = (cheapestTicketPrice %  100).toString().padStart(2,'0')
         "£$offPeakSinglePriceInPounds.$offPeakSinglePenniesLeft"
     }
     return Journey(originStation, destStation, departureTime, arrivalTime,
