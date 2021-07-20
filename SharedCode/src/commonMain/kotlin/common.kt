@@ -78,7 +78,7 @@ fun parseJSONElementToJourney(json: JsonElement): Journey {
         .toString())!!.value
     val arrivalTime: String = Regex("(?<=T)(.{5})").find(json.jsonObject["arrivalTime"]
             .toString())!!.value
-    val nextDay: Boolean = (json.jsonObject["arrivalTime"].toString()[9]-json.jsonObject["departureTime"].toString()[9]) == 1
+    val nextDay: Boolean = (json.jsonObject["arrivalTime"].toString()[10].toInt()-json.jsonObject["departureTime"].toString()[10].toInt()) == 1
     val status: String = json.jsonObject["status"]
             .toString().replace(Regex("^\"|\"$"), "")
 
