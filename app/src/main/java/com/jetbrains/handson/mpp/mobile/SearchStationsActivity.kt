@@ -113,9 +113,7 @@ class SearchStationsActivity : AppCompatActivity(), SearchStationsContract.View 
                                     location.latitude
                                 )
                                 if (distanceInMiles != null) {
-                                    val distanceInMilesRounded: Double? =
-                                        Math.round(distanceInMiles*10)/10.toDouble()
-                                    station.distanceFromLocation = distanceInMilesRounded
+                                    station.distanceFromLocation = distanceInMiles
                                 }
                             }
                         }

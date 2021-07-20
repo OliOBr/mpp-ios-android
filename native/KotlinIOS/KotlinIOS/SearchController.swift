@@ -1,5 +1,6 @@
 import UIKit
 import SharedCode
+import CoreLocation
 
 class SearchController: UIViewController,UITableViewDelegate,UITableViewDataSource, SearchStationsContractView {
     
@@ -11,6 +12,9 @@ class SearchController: UIViewController,UITableViewDelegate,UITableViewDataSour
     var stationSelected : Station?
     var searchedStations: [Station] = []
     var stations: [Station] = []
+    var locationManager = CLLocationManager()
+    
+    var currentLoc: CLLocation!
     
     var searchDelegate:SearchDelegate?
     
@@ -25,7 +29,11 @@ class SearchController: UIViewController,UITableViewDelegate,UITableViewDataSour
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
-            
+        locationManager.requestWhenInUseAuthorization()
+        if(CLLocationManager.authorizationStatus() == .authorizedWhenInUse ||
+        CLLocationManager.authorizationStatus() == .authorizedAlways) {
+           currentLoc = locationManager.location
+        }
         presenter.getAndListStationsData(view: self)
     }
     
@@ -43,11 +51,24 @@ class SearchController: UIViewController,UITableViewDelegate,UITableViewDataSour
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         // create a new cell if needed or reuse an old one
-        let cell = tableView.dequeueReusableCell(withIdentifier: "listItem", for: indexPath )
+        let cell = tableView.dequeueReusableCell(withIdentifier: "listItem", for: indexPath ) as! SearchViewCell
         if (searching) {
-            cell.textLabel!.text = searchedStations[indexPath.row].stationName
+            cell.stationName.text = searchedStations[indexPath.row].stationName
+            if(currentLoc != nil) {
+                var distance =  searchedStations[indexPath.row].getDistanceFromLocation(locationLongitude: currentLoc.coordinate.longitude,locationLatitude: currentLoc.coordinate.latitude)
+                if(distance != nil){
+                    cell.distance.text =
+                        distance!.stringValue + " miles"
+                }
+            }
         } else {
-            cell.textLabel!.text = stations[indexPath.row].stationName
+            cell.stationName!.text = stations[indexPath.row].stationName
+            if(currentLoc != nil) {
+                let distance =  stations[indexPath.row].getDistanceFromLocation(locationLongitude: currentLoc.coordinate.longitude,locationLatitude: currentLoc.coordinate.latitude)
+                if(distance != nil){
+                    cell.distance.text =  distance!.stringValue + " miles"
+                }
+            }
         }
         // set the text from the data model
         return cell
