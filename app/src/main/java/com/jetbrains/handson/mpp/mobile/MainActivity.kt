@@ -64,6 +64,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
 
             numberAdultsSpinner.adapter = adapter
         }
+    numberAdultsSpinner.setSelection(2)
     numberChildrenSpinner = findViewById(R.id.numberChildrenSpinner)
         ArrayAdapter.createFromResource(this, R.array.number_of_travellers, android.R.layout.simple_spinner_item).also {
                 adapter ->
@@ -71,6 +72,8 @@ override fun onCreate(savedInstanceState: Bundle?) {
 
             numberChildrenSpinner.adapter = adapter
         }
+
+    numberAdultsSpinner.setSelection(1)
         departureStationText = findViewById(R.id.departureStationText)
         arrivalStationText = findViewById(R.id.arrivalStationText)
         departureStationText.setOnClickListener{
@@ -78,6 +81,16 @@ override fun onCreate(savedInstanceState: Bundle?) {
         }
         arrivalStationText.setOnClickListener{
             arrivalStationStart.launch(Intent(this,SearchStationsActivity::class.java))
+        }
+        val switchMaterial = findViewById<com.google.android.material.switchmaterial.SwitchMaterial>(R.id.directroute)
+
+    // To listen for a switch's checked/unchecked state changes
+        switchMaterial.setOnCheckedChangeListener{ buttonView, isChecked ->
+            noChanges = if(isChecked){
+                "true"
+            } else {
+                "false"
+            }
         }
 
         val button: Button = findViewById(R.id.button)

@@ -71,6 +71,15 @@
  />
     </LinearLayout>
 
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/directroute"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="Direct Route (no changes):"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/childContainer"
+        tools:layout_editor_absoluteX="10dp" />
     <TextView
         android:id="@+id/fromText"
         style="@style/TextAppearance.MaterialComponents.Body1"
@@ -78,7 +87,7 @@
         android:layout_height="wrap_content"
         android:text="From:"
         android:textAlignment="textStart"
-        app:layout_constraintTop_toBottomOf="@+id/childContainer" />
+        app:layout_constraintTop_toBottomOf="@+id/directroute" />
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
