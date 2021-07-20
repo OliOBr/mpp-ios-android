@@ -27,8 +27,8 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     private lateinit var noJourneysFoundText: TextView
     private lateinit var progressLoader: ProgressBar
 
-    private lateinit var numberAdultsEditText: EditText
-    private lateinit var numberChildrenEditText: EditText
+    private lateinit var numberAdultsSpinner: Spinner
+    private lateinit var numberChildrenSpinner: Spinner
 
     private val departureStationStart = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
     { result: ActivityResult ->
@@ -56,9 +56,21 @@ override fun onCreate(savedInstanceState: Bundle?) {
         noJourneysFoundText = findViewById(R.id.noJourneysFoundText)
         progressLoader = findViewById(R.id.progress_loader)
 
-        numberAdultsEditText = findViewById(R.id.numberAdultsEditText);
-        numberChildrenEditText = findViewById(R.id.numberChildrenEditText);
+        numberAdultsSpinner = findViewById(R.id.numberAdultsSpinner);
 
+        ArrayAdapter.createFromResource(this, R.array.number_of_travellers, android.R.layout.simple_spinner_item).also {
+            adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+            numberAdultsSpinner.adapter = adapter
+        }
+    numberChildrenSpinner = findViewById(R.id.numberChildrenSpinner)
+        ArrayAdapter.createFromResource(this, R.array.number_of_travellers, android.R.layout.simple_spinner_item).also {
+                adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+            numberChildrenSpinner.adapter = adapter
+        }
         departureStationText = findViewById(R.id.departureStationText)
         arrivalStationText = findViewById(R.id.arrivalStationText)
         departureStationText.setOnClickListener{
@@ -77,7 +89,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
             rvTrains.visibility = View.GONE;
             progressLoader.visibility = View.VISIBLE;
             presenter.getAndDisplayJourneysData(this, originStationCRS, destStationCRS,
-                    numberAdultsEditText.text.toString(), numberChildrenEditText.text.toString(),
+                numberAdultsSpinner.selectedItem.toString(), numberChildrenSpinner.selectedItem.toString(),
                     noChanges)
         }
     }

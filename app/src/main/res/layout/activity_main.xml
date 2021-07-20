@@ -23,37 +23,53 @@
             android:contentDescription="L N E R" />
 
     </RelativeLayout>
-
-    <TextView
-        android:id="@+id/numberAdultsText"
-        style="@style/TextAppearance.MaterialComponents.Body1"
+    <LinearLayout
+        android:id="@+id/adultContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Number of Adults:"
-        android:textAlignment="textStart"
-        app:layout_constraintTop_toBottomOf="@+id/imageButtonLayout" />
-    <EditText
+        app:layout_constraintTop_toBottomOf="@+id/imageButtonLayout"
+        >
+     <TextView
+            android:id="@+id/numberAdultsText"
+            style="@style/TextAppearance.MaterialComponents.Body1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+         android:layout_weight="2"
+            android:text="Number of Adults:"
+            android:textAlignment="textStart"/>
+
+        <Spinner
+            android:id="@+id/numberAdultsSpinner"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/numberAdultsText"
+
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/childContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/numberAdultsEditText"
-        app:layout_constraintTop_toBottomOf="@+id/numberAdultsText"
-        android:inputType="text" />
-
+        app:layout_constraintTop_toBottomOf="@+id/adultContainer"
+        >
     <TextView
         android:id="@+id/numberChildrenText"
         style="@style/TextAppearance.MaterialComponents.Body1"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
+        android:layout_weight="2"
         android:layout_height="wrap_content"
         android:text="Number of Children:"
-        android:textAlignment="textStart"
-        app:layout_constraintTop_toBottomOf="@+id/numberAdultsEditText" />
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/numberChildrenEditText"
-        app:layout_constraintTop_toBottomOf="@+id/numberChildrenText"
-        android:inputType="text" />
+        android:textAlignment="textStart" />
 
+    <Spinner
+        android:id="@+id/numberChildrenSpinner"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+ />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/fromText"
@@ -62,7 +78,7 @@
         android:layout_height="wrap_content"
         android:text="From:"
         android:textAlignment="textStart"
-        app:layout_constraintTop_toBottomOf="@+id/numberChildrenEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/childContainer" />
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
