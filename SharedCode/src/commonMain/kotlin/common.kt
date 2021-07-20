@@ -44,7 +44,7 @@ suspend fun makeGetRequestForJourneysData(originStationCRS: String, destStationC
 //            parameter("outboundDateTime", "2021-07-24T15:15:15.000+01:00")
             parameter("outboundIsArriveBy", "false")
         }
-        println(response)
+            //println(response)
         val trainsList: JsonElement? = response["outboundJourneys"]
         return trainsList!!.jsonArray
     } catch (e: Exception) {
@@ -59,7 +59,7 @@ suspend fun makeGetRequestForStationsData(): JsonArray {
     try {
         val response: JsonObject = client.get("https://mobile-api-softwire2.lner.co.uk/v1/stations")
         val stations: JsonElement? = response["stations"]
-        println(response)
+        //println(response)
         return stations!!.jsonArray
     } catch (e: Exception) {
         println("Error getting StationsData from API.")

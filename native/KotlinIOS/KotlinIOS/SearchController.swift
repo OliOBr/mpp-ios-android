@@ -21,8 +21,21 @@ class SearchController: UIViewController,UITableViewDelegate,UITableViewDataSour
     private let presenter: SearchStationsContractPresenter = SearchStationsPresenter()
     
     func listStationsInListView(stationData: [Station]) {
-        stations = stationData
+        addDistancesToStations(stationData: stationData)
+        stations = stationData.sorted(by:{($0.distanceFromLocation ?? 100000).doubleValue  < ($1.distanceFromLocation ?? 100000).doubleValue})
+        print(stations[0].distanceFromLocation?.stringValue)
         tableView.reloadData()
+    }
+    
+    func addDistancesToStations(stationData: [Station]) {
+        for station in stationData {
+            if(currentLoc != nil) {
+                let distance =  station.getDistanceFromLocation(locationLongitude: currentLoc.coordinate.longitude,locationLatitude: currentLoc.coordinate.latitude)
+                if(distance != nil){
+                    station.distanceFromLocation = distance
+                }
+            }
+        }
     }
     
     override func viewDidLoad() {
@@ -54,20 +67,15 @@ class SearchController: UIViewController,UITableViewDelegate,UITableViewDataSour
         let cell = tableView.dequeueReusableCell(withIdentifier: "listItem", for: indexPath ) as! SearchViewCell
         if (searching) {
             cell.stationName.text = searchedStations[indexPath.row].stationName
-            if(currentLoc != nil) {
-                var distance =  searchedStations[indexPath.row].getDistanceFromLocation(locationLongitude: currentLoc.coordinate.longitude,locationLatitude: currentLoc.coordinate.latitude)
-                if(distance != nil){
-                    cell.distance.text =
-                        distance!.stringValue + " miles"
-                }
+            if(searchedStations[indexPath.row].distanceFromLocation != nil) {
+                cell.distance.text = searchedStations[indexPath.row].distanceFromLocation!.stringValue + " miles"
+                
             }
         } else {
             cell.stationName!.text = stations[indexPath.row].stationName
-            if(currentLoc != nil) {
-                let distance =  stations[indexPath.row].getDistanceFromLocation(locationLongitude: currentLoc.coordinate.longitude,locationLatitude: currentLoc.coordinate.latitude)
-                if(distance != nil){
-                    cell.distance.text =  distance!.stringValue + " miles"
-                }
+            if(stations[indexPath.row].distanceFromLocation != nil) {
+                cell.distance.text = stations[indexPath.row].distanceFromLocation!.stringValue + " miles"
+                
             }
         }
         // set the text from the data model
