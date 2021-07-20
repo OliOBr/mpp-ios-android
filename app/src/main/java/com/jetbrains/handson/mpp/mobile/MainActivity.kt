@@ -21,13 +21,14 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     var originStationCRS = ""
     var destStationCRS = ""
 
-    var numberAdults = "1"
-    var numberChildren = "0"
     var noChanges = "false"
 
     private lateinit var rvTrains: RecyclerView
     private lateinit var noJourneysFoundText: TextView
     private lateinit var progressLoader: ProgressBar
+
+    private lateinit var numberAdultsEditText: EditText
+    private lateinit var numberChildrenEditText: EditText
 
     private val departureStationStart = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
     { result: ActivityResult ->
@@ -55,6 +56,9 @@ override fun onCreate(savedInstanceState: Bundle?) {
         noJourneysFoundText = findViewById(R.id.noJourneysFoundText)
         progressLoader = findViewById(R.id.progress_loader)
 
+        numberAdultsEditText = findViewById(R.id.numberAdultsEditText);
+        numberChildrenEditText = findViewById(R.id.numberChildrenEditText);
+
         departureStationText = findViewById(R.id.departureStationText)
         arrivalStationText = findViewById(R.id.arrivalStationText)
         departureStationText.setOnClickListener{
@@ -66,10 +70,15 @@ override fun onCreate(savedInstanceState: Bundle?) {
 
         val button: Button = findViewById(R.id.button)
         button.setOnClickListener{
+
+            println("Button clicked.")
+
             noJourneysFoundText.visibility = View.GONE;
             rvTrains.visibility = View.GONE;
             progressLoader.visibility = View.VISIBLE;
-            presenter.getAndDisplayJourneysData(this, originStationCRS, destStationCRS, numberAdults, numberChildren, noChanges)
+            presenter.getAndDisplayJourneysData(this, originStationCRS, destStationCRS,
+                    numberAdultsEditText.text.toString(), numberChildrenEditText.text.toString(),
+                    noChanges)
         }
     }
 

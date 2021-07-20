@@ -25,6 +25,7 @@ suspend fun makeGetRequestForJourneysData(originStationCRS: String, destStationC
                                           numberAdults: String, numberChildren: String,
                                           noChanges: String): JsonArray {
     println("calling makeGetRequestForJourneysData()")
+    println("numberAdults is $numberAdults")
     val dateFormat = DateFormat("yyyy-MM-ddTHH:mm:ss")
     val currentDateTime = DateTime.now() + TimeSpan(60000.0)
     var currentTime: String = currentDateTime.format(dateFormat)
