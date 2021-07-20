@@ -2,7 +2,10 @@ import UIKit
 import SharedCode
 
 class ViewController: UIViewController,  UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate, MainContractView {
-
+    
+    @IBOutlet var numberAdultsTextField: UITextField!
+    @IBOutlet var numberChildrenTextField: UITextField!
+    
     @IBOutlet var originStationSelector: UITextField!
     @IBOutlet var destinationStationSelector: UITextField!
     @IBOutlet private var button: UIButton!
@@ -16,6 +19,7 @@ class ViewController: UIViewController,  UITableViewDelegate, UITableViewDataSou
     
     var originStationCRS = ""
     var destStationCRS = ""
+    var noChanges = "false"
 
     private let presenter: MainContractPresenter = MainPresenter()
     
@@ -29,7 +33,8 @@ class ViewController: UIViewController,  UITableViewDelegate, UITableViewDataSou
         tableView.isHidden = true
         label.isHidden = true
         progressLoader.isHidden = false
-        presenter.getAndDisplayJourneysData(view: self, originStationCRS: originStationCRS, destStationCRS: destStationCRS)
+        presenter.getAndDisplayJourneysData(view: self, originStationCRS: originStationCRS, destStationCRS: destStationCRS,
+                                            numberAdults: numberAdultsTextField.text!, numberChildren: numberChildrenTextField.text!, noChanges: noChanges)
     }
     
     // number of rows in table view
