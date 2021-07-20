@@ -25,13 +25,44 @@
     </RelativeLayout>
 
     <TextView
+        android:id="@+id/numberAdultsText"
+        style="@style/TextAppearance.MaterialComponents.Body1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Number of Adults:"
+        android:textAlignment="textStart"
+        app:layout_constraintTop_toBottomOf="@+id/imageButtonLayout" />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/numberAdultsEditText"
+        app:layout_constraintTop_toBottomOf="@+id/numberAdultsText"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/numberChildrenText"
+        style="@style/TextAppearance.MaterialComponents.Body1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Number of Children:"
+        android:textAlignment="textStart"
+        app:layout_constraintTop_toBottomOf="@+id/numberAdultsEditText" />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/numberChildrenEditText"
+        app:layout_constraintTop_toBottomOf="@+id/numberChildrenText"
+        android:inputType="text" />
+
+
+    <TextView
         android:id="@+id/fromText"
         style="@style/TextAppearance.MaterialComponents.Body1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="From:"
         android:textAlignment="textStart"
-        app:layout_constraintTop_toBottomOf="@+id/imageButtonLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/numberChildrenEditText" />
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

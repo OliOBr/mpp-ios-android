@@ -14,9 +14,12 @@ class MainPresenter: MainContract.Presenter() {
 
     private val scope = CoroutineScope(coroutineContext)
 
-    override fun getAndDisplayJourneysData(view: MainContract.View, originStationCRS: String, destStationCRS: String) {
+    override fun getAndDisplayJourneysData(view: MainContract.View, originStationCRS: String,
+                                           destStationCRS: String, numberAdults: String,
+                                           numberChildren: String, noChanges: String) {
         scope.launch { // launch a new coroutine and continue
-            val journeysData: JsonArray = makeGetRequestForJourneysData(originStationCRS, destStationCRS)
+            val journeysData: JsonArray = makeGetRequestForJourneysData(originStationCRS,
+                    destStationCRS, numberAdults, numberChildren, noChanges)
             view.displayJourneysInRecyclerView(journeysData.map{parseJSONElementToJourney(it)})
         }
     }
