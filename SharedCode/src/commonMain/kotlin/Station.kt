@@ -1,10 +1,8 @@
 package com.jetbrains.handson.mpp.mobile
 
 import kotlinx.serialization.*
-import kotlin.math.PI
-import kotlin.math.acos
-import kotlin.math.cos
-import kotlin.math.sin
+import kotlin.math.*
+
 @Serializable
 data class Station(val stationName: String, val nlc: String, val crs: String, val longitude: Double?, val latitude: Double?, var distanceFromLocation: Double? = null) {
     override fun toString(): String {
@@ -21,7 +19,7 @@ data class Station(val stationName: String, val nlc: String, val crs: String, va
             dist = acos(dist)
             dist = dist * 180 / PI
             dist *= 60 * 1.1515
-            dist
+            round(dist*10)/10
         } else {
             null
         }
